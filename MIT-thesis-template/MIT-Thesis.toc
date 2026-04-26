@@ -1,0 +1,13 @@
+\contentsline {frontmatter}{List of Figures}{11}{listoffigures}%
+\contentsline {frontmatter}{List of Tables}{13}{listoftables}%
+\contentsline {chapter}{\numberline {1}Introduction}{15}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Background}{17}{chapter.2}%
+\contentsline {chapter}{\numberline {3}Register Refactoring}{19}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Register Types}{19}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Register get/set}{20}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Memory Refactoring}{23}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Symbolic Execution and Rewriting for Vector Instructions}{27}{chapter.5}%
+\contentsline {chapter}{\numberline {5}Results}{23}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Discussion and Future Work}{25}{chapter.6}%
+\contentsline {chapter}{\numberline {A}Appendix A}{27}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Appendix B}{29}{appendix.B}%

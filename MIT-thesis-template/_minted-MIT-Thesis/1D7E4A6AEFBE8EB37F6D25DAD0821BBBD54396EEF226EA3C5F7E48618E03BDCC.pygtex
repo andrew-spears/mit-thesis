@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{vmovdqu}\PYG{+w}{ }\PYG{n+no}{ymm0}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{[}\PYG{n+no}{rbx}\PYG{p}{]}
+\end{Verbatim}

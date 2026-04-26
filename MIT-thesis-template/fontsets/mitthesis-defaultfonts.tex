@@ -1,0 +1,27 @@
+% From mitthesis package
+% Documentation: https://ctan.org/pkg/mitthesis
+
+\ProvidesFile{mitthesis-defaultfonts.tex}[2026/01/31 v1.07 Load Computer/Latin Modern text and math fonts]
+
+%% Default fonts
+\ifpdftex
+	\ClassNoteNoLine{\ClassName}{Loading Computer Modern text and math fonts (default for pdftex)}
+	\RequirePackage[T1]{fontenc} % With T1 encoding, pdftex will silently load the cm-super fontset
+%   \RequirePackage[]{babel} % load babel (with desired options) if using a language other than English
+	\RequirePackage{bm}
+	%
+	\RequirePackage{etoolbox} % may already be loaded by the .cls file
+	% Patch headings to automatically use \mathversion{bold}. Compare to report.cls. 
+	\patchcmd{\section}{\normalfont}{\mathversion{bold}\normalfont}{}{}
+	\patchcmd{\subsection}{\normalfont}{\mathversion{bold}\normalfont}{}{}
+	\patchcmd{\subsubsection}{\normalfont}{\mathversion{bold}\normalfont}{}{}
+	\patchcmd{\paragraph}{\normalfont}{\mathversion{bold}\normalfont}{}{}
+	\patchcmd{\subparagraph}{\normalfont}{\mathversion{bold}\normalfont}{}{}
+\else
+	\ClassNoteNoLine{\ClassName}{Loading Latin Modern text and math fonts (default for unicode engines)}
+	%
+%   \RequirePackage[]{babel} % load babel (with desired options) if using a language other than English
+    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket},mathbf=sym]{unicode-math}
+    % suppress warnings about lack of integration between mathtools and unicode-math.
+    % Unicode-math loads fontspec package, but default fonts are not selected by fontspec in this case.
+\fi

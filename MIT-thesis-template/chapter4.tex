@@ -1,0 +1,42 @@
+\chapter{Memory Refactoring}
+\label{ch:memory}
+
+Like registers, a lot of memory operations were originally built around 64-bit values. Memory in Fiat-Crypto is represented in two ways. In semantics, memory state is a mapping from 64-bit addresses to bytes:
+
+\codeshot{mem_state.png}
+
+This represents what is actually stored in the machine. On the other hand, we have a representation which is referenced when memory operations are added to the symbolic execution graph. This representation only needs to store values in abstract to keep track of how each store operation influences later load operations, so it uses a mapping between symbolic execution nodes:
+
+\codeshot{mem_state_symb.png}
+
+where both keys and values are implicitly both 64-bits. This is important because there is no overflow from one memory write to the next address - writing to address a cannot influence address a+8 in this model, so the values need to be a consistent size. One could have used bytes like the semantic memory model, but symbolic execution is far simpler when eveyrthing uses 64 bits, the most common size. Thus, two operations exist for this purpose:
+
+\codeshot{Load64.png}
+\vspace{-5ex}
+\codeshot{Store64.png}
+
+Then for loading a single Load function handles the sizes of values involved:
+
+\codeshot{LoadOld.png}
+
+Storing is handled similarly.
+
+Some aspects of this model should stay fixed. Memory addresses should always be 64-bits, and it makes sense to keep these data structures. But we often want to store or load chunks of more than 64 bits when working with AVX registers. For example, \mintinline{asm}{vmovdqu ymm0, [rbx]} loads 32 bytes of memory into the ymm0 register.
+
+To address this, we need to change the existing Load and Store functions to allow larger memory reads without altering the 64-bit value memory model. The simplest approach is to break larger operations into 64-bit chunks:
+
+\codeshot{Load_of_idx.png}
+\vspace{-5ex}
+\codeshot{LoadNew.png}
+
+This approach retains the simplicity of 64-bit loads (notice the first branch calls Load64 directly). We keep the memory model unchanged, but larger memory operations pay the price of lots of extra operations to compute offset, slicing, and loading individual chunks.
+
+To prove correctness of this new structure, we need to prove that the \verb|Load_of_idx| function (affects symbolic state) is equivalent to loading the appropriate number of 8-byte chunks with \verb|get_mem| (affects machine state). We can do this with the following lemma:
+
+\codeshot{LoadN_R.png}
+
+which admits a proof by induction on $n$.
+
+\codeshot{get_mem_app_split.png}
+\todo{include this?}
+
