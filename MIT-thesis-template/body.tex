@@ -1,0 +1,1059 @@
+%%% Body of the thesis. All chapter content lives here. %%%
+
+\chapter{Introduction}
+\label{ch:intro}
+
+Cryptographic software depends on a small set of arithmetic primitives that are invoked thousands of times in basic protocols. These operations are mathematically simple (finite-field addition, multiplication, and reduction), but their implementations are performance-critical. For this reason, they are often hand-optimized in assembly to exploit machine-specific features, a process that is both error-prone and difficult to verify. 
+
+Fiat Cryptography and CryptOpt are recent projects that attempt to solve this problem by synthesizing low-level programs and guaranteeing correctness through formal verification. 
+The resulting code outperforms standard compilers and certain synthesized primitives are used in production by all major web browsers and many TLS implementations.
+
+However, both Fiat Cryptography and CryptOpt are currently limited to scalar x86-64 instructions. Vectorized instructions perform operations in parallel and are increasingly relied upon in the most performant implementations, but these synthesis pipelines are incompatible with vectorized instruction sets, putting a hard ceiling on their performance capabilities.
+
+Fiat Cryptography includes an equivalence checker that verifies assembly programs against high-level specifications.
+This thesis extends the equivalence checker to support AVX2 vector instructions.
+Our contributions include:
+\begin{enumerate}
+    \item Refactoring existing proof infrastructure and automation to be more modular, enabling scalable extension to new instruction families.
+    \item Refactoring the register and memory infrastructure to support 128-bit and 256-bit operands.
+    \item Implementing symbolic execution for over 20 AVX2 instructions, with modular abstractions designed to scale to additional instructions.
+    \item Developing a hierarchical proof strategy with correspondence lemmas and proof automation for relating symbolic and concrete semantics.
+    \item Adding rewrite rules that enable the equivalence checker to simplify lane gathering and decomposition patterns.
+\item Demonstrating end-to-end equivalence checking on a suite of vectorized field arithmetic programs.
+\end{enumerate}
+
+\chapter{Background}
+\label{ch:background}
+
+
+\section{Cryptography and Limb Representation}
+
+Elliptic curve cryptography works with finite fields, generally integers modulo a large prime. 
+The field elements involved are typically on the order of hundreds of bits, far too large to fit in a single machine word.
+Instead, they are represented using an array of 64-bit integers called \emph{limbs}.
+
+One commonly used field is integers modulo $2^{255}-19$, whose largest element occupies 255 bits. 
+This could mathematically fit in 4 64-bit limbs, but in practice, representation schemes typically use 5 or more limbs.
+For example, the \question{ \emph{unsaturated Solinas}}{cite?} representation uses 5 64-bit limbs with headroom in each limb so that many operations can be applied independently to each limb before carrying between them. 
+
+These engineering choices have two important consequences: 
+\begin{itemize}
+    \item addition and subtraction can be parallelized across limbs (although multiplication and carry propagation cannot).
+    \item implementing and optimizing even basic field arithmetic operations can be extremely complex, since each operation involves many registers and ALU instructions.
+\end{itemize}
+
+\section{AVX2 and SIMD Instructions}
+\label{sec:avx-background}
+
+SIMD (Single Instruction, Multiple Data) is a class of parallel processing in which a single instruction operates on multiple data elements simultaneously.
+On x86-64, Intel's AVX2 (Advanced Vector Extensions 2) instruction set provides SIMD capabilities through vector registers (split into \textit{lanes} that are used to hold multiple values) and vector instructions.
+
+AVX2 introduces two tiers of vector registers:
+\begin{itemize}
+    \item \textbf{XMM registers} (\texttt{xmm0}--\texttt{xmm15}): 128 bits wide, holding two 64-bit lanes or four 32-bit lanes.
+    \item \textbf{YMM registers} (\texttt{ymm0}--\texttt{ymm15}): 256 bits wide, holding four 64-bit lanes or eight 32-bit lanes. Each YMM register's lower 128 bits alias the corresponding XMM register.
+\end{itemize}
+
+Most AVX2 arithmetic instructions operate \emph{lane-wise}, meaning they apply the same operation independently to each lane of the input registers.
+
+For cryptography, SIMD parallelism can be utilized in two ways:
+
+\begin{itemize}
+    \item \emph{Limb-parallel} programs use vector registers to process multiple limbs of a single field element simultaneously --- for example, packing limbs 0 and 1 into one XMM register and adding them in a single \texttt{vpaddq}. These can be checked against existing specifications in Fiat Cryptography, since they are optimizations of scalar field operations.
+    \item \emph{Batched} programs instead process the same limb across multiple independent field elements --- for example, packing limb 0 of four different elements into one YMM register, so a single \texttt{vpaddq} performs four independent additions at that limb position. These specifications did not previously exist in Fiat Cryptography.
+\end{itemize}
+
+The AVX2 instructions used in this work include data movement (\texttt{vmovdqu}, \texttt{vmovq}, \texttt{vpbroadcastq}), lane-wise arithmetic (\texttt{vpaddq}, \texttt{vpsubq}, \texttt{vpmuludq}), bitwise operations (\texttt{vpandq}, \texttt{vpxorq}), shifts (\texttt{vpsllq}, \texttt{vpsrlq}), and lane manipulation (\texttt{vpblendd}, \texttt{vpunpcklqdq}, \texttt{vpextrq}, \texttt{vextracti128}).
+
+
+
+\section{Rocq Theorem Prover}
+
+Fiat Cryptography and our additions are implemented in Rocq (formerly Coq), an interactive proof assistant enabling functional code along with compile-time-verified proofs of logical propositions about runtime values.
+
+Throughout this thesis we show Rocq code snippets: \question{\texttt{Definition} and \texttt{Fixpoint} introduce functions, \texttt{Lemma} states a theorem, and \texttt{Proof ... Qed} provides its proof.}
+{not sure exactly what to include here. paper probably wont make any sense to someone who doesnt know any rocq anyway?}
+
+\section{Fiat Cryptography}
+\label{sec:fiat-crypto}
+Fiat Cryptography \autocite{fiatcrypto2019} is a verified compiler that synthesizes correct-by-construction implementations of finite-field arithmetic.
+At a high level, its synthesis pipeline works as follows:
+\begin{enumerate}
+    \item A mathematical specification of each field operation (e.g., modular addition) is defined by hand as a Rocq function.
+    \item The specification is \textit{reified} --- converted from a Rocq function into an explicit syntax tree in PHOAS (Parametric Higher-Order Abstract Syntax) that can be inspected and transformed programmatically.
+    \item The PHOAS expression is passed through \texttt{BoundsPipeline}, which performs partial evaluation, bounds analysis, and arithmetic optimizations, producing an optimized PHOAS expression.
+    \item The optimized expression is stringified into C code (or other target languages).
+\end{enumerate}
+Each stage is accompanied by a machine-checked proof that it preserves the semantics of the original specification.
+
+
+\section{CryptOpt}
+\label{sec:cryptopt}
+CryptOpt \autocite{cryptopt2023} extends the approach of a formally-verified synthesis pipeline with two significant features: a stochastic optimizer and an equivalence checker.
+
+% stochastic optimizer
+Starting from the optimized PHOAS expression, CryptOpt generates an initial assembly implementation, then repeatedly mutates it by reordering instructions, substituting equivalent instruction templates, and reallocating registers. Mutations that improve execution time on the target CPU are kept, while those that decrease performance are discarded. The result is a highly performant but not certifiably correct program.
+
+\section{The Equivalence Checker}
+\label{sec:equiv-checker}
+
+The equivalence checker exists to verify the untrusted assembly programs output by CryptOpt\footnote{or another optimization process, including handwritten code. The equivalence checker resides in the Fiat-Crypto repository.}. At a high level, it does this by simulating the program and building up expressions representing each relevant value as a function of inputs (we call this \emph{symbolic execution}). This process is represented by a graph-based data structure called an \emph{E-graph}\footnote{A simplified version of an E-graph.}. Details are explained in \autoref{ch:architecture}.
+
+An equivalence checker between assembly programs and high-level functional programs would be straightforward if both kinds of programs were self-contained mappings from inputs to outputs. In reality, x86-64 assembly is inherently stateful --- each instruction reads and writes register and memory values, so the behavior of each instruction depends on prior ones.
+
+The equivalence checker addresses this with a simple mapping called \emph{symbolic state} that maps each register and memory address to a previously created logical variable in the E-graph. 
+
+After each instruction is symbolically executed, the equivalence checker runs a set of \emph{rewrite rules} that simplify the DAG by pattern-matching on node structure and replacing subexpressions with equivalent simpler forms.
+These rewrites are essential for recognizing equivalence between two programs. Without this step, checking equivalence would be computationally expensive or undecidable.
+
+By the end of symbolic execution, the logical variables associated with output registers and memory locations represent the program's outputs as expressions over the inputs, and equivalence between the program and specification \question{reduces to checking that outputs map to correct logical variables in symbolic state.}{Not sure if this wording make sense}
+
+To symbolically execute an assembly program in this way, the equivalence checker needs a reference for how to execute each instruction, but also assurance that this symbolic execution is faithful to actual x86-64 semantics.
+It achieves both by having two separate \question{descriptions}{Implementations? interpretations?} of each instruction: the semantic description, which encodes exactly what the instruction does on the machine; and the symbolic description, which describes how the instruction affects the DAG and symbolic state.
+A layer in between then proves equivalence of the two descriptions.
+
+This split achieves three things:
+\begin{enumerate}
+    \item The trusted specification of each instruction (concrete semantics) is simple enough for a human to audit against the ISA manual.
+    \item The symbolic layer is free to use efficient abstractions (decomposing instructions to a set of atomic operations) tailored to the DAG representation.
+    \item The proof layer between the two ensures soundness without trusting that the symbolic description is faithful to x86 behavior.
+\end{enumerate}
+
+\section{Related Work}
+\label{sec:related-work}
+
+\question{Several projects}{Ive done my best to get this right and fact checked with an LLM, but I could be misunderstanding some of these and how they differ from fiat cryptography} address verified cryptographic implementations at different levels of abstraction.
+
+\textbf{Jasmin}~\autocite{jasmin2017} is a language and compiler for high-assurance cryptography, verified in Rocq.
+Programmers write in a C-like language with assembly-level control over instruction selection and register allocation, and the compiler produces x86-64 assembly with formally verified passes.
+Unlike our work, Jasmin verifies its own compiler's output rather than externally produced assembly, and currently targets only scalar x86-64 instructions.
+
+\textbf{HACL*} is a verified cryptography library written in F*. It provides pure C implementations of cryptographic primitives that are formally verified for memory safety, functional correctness, and secret independence. The resulting code is portable but not optimized for platform-specific assembly.
+
+\textbf{Vale and EverCrypt.}
+Vale~\autocite{vale2017} is a tool for writing and verifying assembly code in F*.
+Cryptographic routines are written directly in Vale's DSL, and F* proves similar properties as in HACL*.
+EverCrypt~\autocite{evercrypt2020} wraps Vale and HACL* behind a multiplexing API that selects the best implementation at runtime; it is deployed in Firefox, the Linux kernel, and other production systems.
+However, Vale requires cryptographic code to be written in its DSL, whereas our approach verifies assembly written in standard Intel syntax.
+
+\textbf{HACL$\times$N}~\autocite{haclxn2020} is the closest prior work on verified SIMD cryptography.
+It extends HACL* with generic SIMD code in F* parameterized over vector width, targeting ARM Neon, AVX, AVX2, and AVX-512.
+However, HACL$\times$N operates at a higher level of abstraction: SIMD parallelism is expressed through F*'s type system with explicit vector types, avoiding reasoning about x86 semantics entirely. Assembly programs can be compiled from this point, but will not be provably correct.
+
+
+To our knowledge, this thesis presents the first formally verified checking of raw AVX2 assembly against a functional specification. Prior work either avoids assembly-level reasoning by using a DSL or does not handle SIMD instructions.
+
+
+
+\chapter{System Architecture}
+\label{ch:architecture}
+
+\section{Symbolic Execution}
+
+We mentioned in \autoref{sec:equiv-checker} that the equivalence checker uses a simplified version of an E-graph to simulate executing a program.
+Specifically, it uses a hash-consing DAG, where each node stores an operator and a list of child indices; when a new expression is inserted, its operands are canonicalized (e.g., sorted for commutative operators) and the DAG is scanned for an existing match.
+If one is found, the existing index is returned rather than creating a duplicate node.
+This design means two expressions are proven equal exactly when they resolve to the same DAG index, without needing the added complexity of SAT solving or union-find.
+
+To \question{handle state,}{is this too confusing without a diagram?} a \textit{symbolic state} maps each register and memory address to a logical variable, which is itself a pointer into the DAG. Each new instruction looks up the logical variables for its source operands, builds an expression representing its effect, and writes a new logical variable back into the symbolic state.
+
+In Rocq, these stateful operations are threaded through a symbolic state monad \texttt{M}, where the bind operator \bind{} sequences steps that read or update the state.
+For example, the symbolic execution of \texttt{mov dst, src} is:
+
+% #CODESHOT mov_symex
+%   | mov, [dst; src] =>
+%     v <- GetOperand src;
+%     SetOperand dst v
+% #END
+\codeshot{mov_symex}
+
+\noindent \texttt{GetOperand} looks up the source's current DAG index and sets $v$ to the resulting value, while threading the state through to the next operation; \texttt{SetOperand} edits the destination register and returns the resulting state.
+
+\section{Correspondence}
+
+A sound equivalence checker must be faithful to x86-64 semantics when performing symbolic execution.
+Correspondence between the semantic and symbolic layers is captured by a relation $R\; s\; m$, which asserts that the symbolic state $s$ (the DAG and register/memory mappings into it) is a faithful abstraction of the machine state $m$ (simulated concrete register and memory values). 
+
+Specifically, if a DAG index $i$ is mapped to a register or memory slot in the symbolic state, then evaluating the DAG expression rooted at $i$ must produce the concrete value stored in that register or slot in $m$. 
+
+Each correspondence lemma then takes the form: given $R\; s\; m$ before an instruction and a successful symbolic execution producing state $s'$, conclude that:
+\begin{itemize}
+    \item There exists a machine state $m'$ that is the result of concretely executing the same instruction on $m$.
+    \item $R\; s'\; m'$ holds (the simulation relation is preserved).
+    \item $s \prec s'$: the DAG only grew, so all previously valid indices still evaluate to the same values.
+\end{itemize}
+
+For example, this lemma proves correspondence is preserved by setting a register value:
+
+% #CODESHOT R_SetReg
+% Lemma R_SetReg {opts : symbolic_options_computed_opt} {descr:description}
+%   s s' m (HR : R s m) r i _tt
+%   (H : Symbolic.SetReg r i s = Success (_tt, s')) (* updated symbolic state *)
+%   v (Hv : eval s i v) (* index i in state s evaluates to value v *)
+%   : let m' := (update_reg_with m (fun rs => set_reg rs r v)) in (* updated machine state *)
+%    R s' m' /\ s :< s'.
+% #END
+\codeshot{R_SetReg}
+
+
+
+\chapter{Infrastructure for Wide Operands}
+\label{ch:infrastructure}
+
+Fiat Cryptography was originally designed around scalar x86-64 registers, and therefore had no notion of registers or memory accesses larger than 64 bits.
+AVX includes 128-bit xmm and 256-bit ymm registers, and instructions that load and store 128 or 256 bits at a time.
+Before implementing any vector instruction semantics, we needed to fully refactor the register and memory infrastructure to accommodate these wider operands.
+
+\section{Register Types}
+\label{sec:reg-types}
+
+This refactoring process began with the register type.
+Scalar and vector registers are fundamentally different in terms of how they interact with the rest of the codebase, in a few important ways:
+
+\begin{itemize}
+    \item Only scalar registers can form memory-address operands.
+    \item Only scalar registers can participate in flag-setting arithmetic and carry chains.
+    \item Only scalar registers can appear in calling conventions.
+    \item Scalar registers' alias hierarchy is four levels deep (al/ax/eax/rax).
+    \item Vector registers carry opaque packed-lane data.
+    \item Vector registers alias only two levels deep (xmm/ymm).
+\end{itemize}
+
+We made the two register kinds distinguishable by type, with a unifying type REG = SReg SREG | VReg VREG.
+
+% #CODESHOT REG
+% (* Unified register type: scalar or vector *)
+% Inductive REG :=
+% | SReg (r : SREG)
+% | VReg (v : VREG)
+% .
+% #END
+\codeshot{REG}
+
+Downstream functions that need to distinguish between the two can now do so directly by type.
+For example, a memory location needs to accept only scalar registers for the base address:
+
+% #CODESHOT MEM
+% Record MEM := {
+%   mem_bits_access_size : option AccessSize ;
+%   mem_base_reg : option SREG ;
+%   mem_scale_reg : option (Z * SREG) ;
+%   mem_base_label : option string ;
+%   mem_offset : option Z ;
+%   rip_relative : rip_relative_kind
+% }.
+% #END
+\codeshot{MEM}
+
+
+\section{Register Read/Writes}
+\label{sec:reg-rw}
+
+Many existing functions for interacting with register values in Fiat-Crypto were specialized to handling 64-bit values.
+For example, the SetReg function uses two branches for 64-bit writes and smaller register writes because an 8- or 32-bit write needs to combine the new value with the existing value, whereas a 64-bit write can overwrite the old value, meaning the old value can be completely forgotten (or be unspecified to begin with), simplifying the computation graph in many cases.
+
+% #CODESHOT SetRegOld
+% (* Old *)
+% Definition SetReg {opts : symbolic_options_computed_opt} {descr:description} r (v : idx) : M unit :=
+%   let '(rn, lo, sz) := index_and_shift_and_bitcount_of_reg r in
+%   if N.eqb sz 64
+%   then v <- App (slice 0 64, [v]);
+%        SetReg64 rn v (* works even if old value is unspecified *)
+%   else old <- GetReg64 rn;
+%        v <- App ((set_slice lo sz), [old; v]);
+%        SetReg64 rn v.
+% #END
+\codeshot{SetRegOld}
+
+However, when writing to a 128-bit-wide xmm register, even a 64-bit write needs to set a slice of the old value, so this function should check more generally if the write matches the largest size of this register's aliasing hierarchy:
+
+% #CODESHOT SetRegNew
+% (* New *)
+% Definition SetReg {opts : symbolic_options_computed_opt} {descr:description}
+%   r (v : idx) : M unit :=
+%   let '(_, lo, sz) := index_and_shift_and_bitcount_of_reg r in
+%   (* check size against widest register in hierarchy *)
+%   if (N.eqb lo 0) && (N.eqb sz (widest_reg_size_of r))
+%   then SetRegOverwrite r v (* works even if old value is unspecified *)
+%   else SetRegSlice r v.
+% #END
+\codeshot{SetRegNew}
+
+This kind of refactor requires new lemma structure as well.
+In this case, we introduced two new lemmas:
+
+% #CODESHOT R_SetReg_full
+% (* Overwrite case: r is the widest register in its hierarchy. *)
+% Lemma R_SetRegOverwrite {opts : symbolic_options_computed_opt} {descr:description}
+%   s m (HR : R s m) r i _tt s'
+%   (Hoffset : reg_offset r = 0%N)
+%   (Hwidest : reg_size r = widest_reg_size_of r)
+%   (H : Symbolic.SetRegOverwrite r i s = Success (_tt, s'))
+%   v (Hv : eval s i v)
+%   : let m' := (update_reg_with m (fun rs => set_reg rs r v)) in
+%     R s' m' /\ s :< s'.
+% #END
+\codeshot{R_SetReg_full}
+% \vspace{-5ex}
+% #CODESHOT R_SetReg_partial
+% (* Slice case: r is narrower than the widest register in its hierarchy.
+%    No precondition on offset/size: SetRegSlice always works correctly. *)
+% Lemma R_SetRegSlice {opts : symbolic_options_computed_opt} {descr:description}
+%   s m (HR : R s m) r i _tt s'
+%   (H : Symbolic.SetRegSlice r i s = Success (_tt, s'))
+%   v (Hv : eval s i v)
+%   : let m' := (update_reg_with m (fun rs => set_reg rs r v)) in
+%     R s' m' /\ s :< s'.
+% #END
+\codeshot{R_SetReg_partial}
+
+
+\section{Memory Model}
+\label{sec:mem-model}
+
+Like registers, memory operations were originally built around 64-bit values.
+Memory in Fiat-Crypto is represented in two ways.
+In semantics, memory state is a mapping from 64-bit addresses to bytes:
+
+% #CODESHOT mem_state
+% (* semantic *)
+% Definition mem_state := (SortedListWord.map (Naive.word 64) Byte.byte).
+% #END
+\codeshot{mem_state}
+
+This map represents what is actually stored in the machine.
+On the other hand, we have a representation that is referenced when memory operations are added to the symbolic execution graph.
+This representation only needs to store values in the abstract to keep track of how each store operation influences later load operations, so it uses a mapping between symbolic execution nodes:
+
+% #CODESHOT mem_state_symb
+% (* symbolic *)
+% Definition mem_state := list (idx * idx).
+% #END
+\codeshot{mem_state_symb}
+
+\noindent where both keys and values are implicitly 64-bits.
+This consistency is important because there is no overflow from one memory write to the next address -- writing to address a cannot influence address a+8 in this model, so the values need to be a consistent size.
+One could have used bytes like the semantic memory model, but symbolic execution is far simpler when everything uses 64 bits, the most common size.
+Thus, two operations exist for this purpose:
+
+% #CODESHOT Load64
+% Definition Load64 (a : idx) : M idx :=
+%   some_or (load a) (error.load a).
+% #END
+\codeshot{Load64}
+\vspace{-5ex}
+% #CODESHOT Store64
+% Definition Store64 (a v : idx) : M unit :=
+%   ms <- some_or (store a v) (error.store a v);
+%   fun s => Success (tt, update_mem_with s (fun _ => ms)).
+% #END
+\codeshot{Store64}
+
+Then for loading a single Load function handles the sizes of values involved:
+
+% #CODESHOT Load_old
+% (* Old *)
+% Definition Load {opts : symbolic_options_computed_opt} {descr:description} {s : OperationSize} {sa : AddressSize} (a : MEM) : M idx :=
+%   if negb (orb (Syntax.operand_size a s =? 8 )( Syntax.operand_size a s =? 64))%N
+%   then err (error.unsupported_memory_access_size (Syntax.operand_size a s)) else
+%   addr <- Address a;
+%   v <- Load64 addr;
+%   App ((slice 0 (Syntax.operand_size a s)), [v]).
+% #END
+\codeshot{Load_old}
+
+Storing is handled similarly.
+
+\section{Multi-Word Loads and Stores}
+\label{sec:multi-word}
+
+Some aspects of the memory model should stay fixed.
+Memory addresses should always be 64 bits, and it makes sense to keep these data structures.
+But we often want to store or load chunks of more than 64 bits when working with AVX registers.
+For example, \mintinline{asm}{vmovdqu ymm0, [rbx]} loads 32 bytes of memory into the ymm0 register.
+
+To address this issue, we need to change the existing Load and Store functions to allow larger memory reads without altering the 64-bit value memory model.
+The simplest approach is to break larger operations into 64-bit chunks:
+
+% #CODESHOT Load_of_idx
+% (* Load (n * 64) bits starting at addr, as a single idx.
+%    Produces n sequential Load64s at addr, addr+8, ..., addr+8*(n-1),
+%    combined via set_slice into one (n*64)-bit value. *)
+% Fixpoint Load_of_idx {opts : symbolic_options_computed_opt} {descr:description}
+%   {sa : AddressSize} (n : nat) (addr : idx) : M idx :=
+%   match n with
+%   | O      => App (const 0, nil)
+%   | S n'   => prev   <- Load_of_idx n' addr;
+%               offset <- App (const (8 * Z.of_nat n'), nil);
+%               addr_k <- App (add sa, [addr; offset]);
+%               chunk  <- Load64 addr_k;
+%               App (set_slice (64 * N.of_nat n') 64, [prev; chunk])
+%   end.
+% #END
+\codeshot{Load_of_idx}
+\vspace{-5ex}
+% #CODESHOT Load_new
+% (* New *)
+% Definition Load {opts : symbolic_options_computed_opt} {descr:description}
+%   {s : OperationSize} {sa : AddressSize} (a : MEM) : M idx :=
+%   let sz := Syntax.operand_size a s in
+%   addr <- Address a;
+%   if ((sz =? 8) || (sz =? 64))%N%bool then
+%     v <- Load64 addr;
+%     App ((slice 0 sz), [v])
+%   else if (sz =? 128)%N then
+%     Load128_of_idx addr
+%   else if (sz =? 256)%N then
+%     Load256_of_idx addr
+%   else err (error.unsupported_memory_access_size sz).
+% #END
+\codeshot{Load_new}
+
+This approach retains the simplicity of 64-bit loads (notice the first branch calls Load64 directly).
+We keep the memory model unchanged, but larger memory operations pay the price in extra operations: address arithmetic, slicing, and loading multiple chunks.
+
+To prove correctness of this new structure, we need to prove that the \texttt{Load_of_idx} function (affects symbolic state) is equivalent to loading the appropriate number of 8-byte chunks with \texttt{get_mem} (affects machine state).
+We use the following lemma:
+
+% #CODESHOT LoadN_R
+% (* General (n*64)-bit load. Load128_R / Load256_R are corollaries below. *)
+% Lemma LoadN_R {opts : symbolic_options_computed_opt} {descr:description}
+%   {sa : AddressSize}
+%   (Hsa : sa = 64%N)
+%   n s m (HR : R s m) (addr : idx)
+%   va (Ha : eval s addr va)
+%   i s' (H : Load_of_idx n addr s = Success (i, s'))
+%   : R s' m /\ s :< s' /\
+%     exists v, eval s' i v /\
+%               get_mem m va (8 * n) = Some v /\
+%               v = Z.land v (Z.ones (64 * Z.of_nat n)).
+% #END
+\codeshot{LoadN_R}
+
+which admits a proof by induction on $n$.
+
+
+
+\chapter{Symbolic Execution for Vector Instructions}
+\label{ch:symex}
+
+
+\section{Two Approaches}
+\label{sec:two-approaches}
+
+When an instruction is symbolically executed, we need a way of encoding/interpreting what computation is actually being done.
+There are two principled ways to do this for any (nontrivial) instruction, each of which abstracts details to one place or another.
+The first way is to include a single atomic operation in the execution graph, and the second is to break the instruction down into a composition of simpler operations as soon as it is symbolically executed.
+
+We initially pursued the atomic-op approach, described in \autoref{sec:atomic-op}.
+After running into scalability problems with the rewrite rules required to make it work, we abandoned it in favor of the decomposition approach described in \autoref{sec:lane-decomposition}.
+
+\section{Initial Attempt: Atomic Vector Ops}
+\label{sec:atomic-op}
+
+This approach keeps symbolic execution simple by emitting a single atomic \texttt{op} for each vector instruction and abstracting details away.
+This means we need to define new symbolic operations, for example \texttt{vadd} and \texttt{vsubb}:
+
+% #CODESHOT op
+% Variant op := ... | vadd (lane_width num_lanes : N) | vsub (lane_width num_lanes : N).
+% #END
+\codeshot{op}
+
+Symbolic execution of a vector instruction becomes trivial by getting the source values, applying the corresponding operation, and writing to the destination:
+
+% #CODESHOT SymexNormalInstruction1
+% Definition SymexNormalInstruction {opts : symbolic_options_computed_opt} {descr:description}
+%     (instr : NormalInstruction) : M unit :=
+%     match instr.(Syntax.op), instr.(args) with
+%     ...
+%     | vpaddq, [dst; src1; src2] => (* packed add of quadwords *)
+%         SymbolicVector.SymexVectorBinOp dst src1 src2 (add 64) 4 64
+%     ...
+% #END
+\codeshot{SymexNormalInstruction1}
+
+This design has two important implications.
+First, we must extend \texttt{interp_op} with a case for \texttt{vadd}, defining its concrete semantics in terms of machine state.
+Second (more importantly), the burden of equivalence proofs shifts onto the rewrite system.
+
+We were able to make this work for simple programs, but only by defining many ad-hoc, complex rewrite rules, which we explain in \autoref{sec:rewriting}. Based on this initial attempt, we decided that this approach was less principled, more complicated, and less scalable than the alternative.
+
+\section{Adopted Approach: Lane Decomposition in Symbolic Execution}
+\label{sec:lane-decomposition}
+
+We therefore adopted the second approach: breaking vector instructions into their component operations immediately in symbolic execution.
+Most vector instructions follow the same pattern: slice lane values from both source registers (which we model as simply larger scalar registers), perform a binary operation, write to lanes of the destination register.
+For example, the \texttt{vpaddq} instruction can be expressed as a composition of simpler operations: \texttt{slice}, \texttt{add}, and \texttt{set_slice} to combine results back into a vector.
+
+This pattern can be captured by a few helper functions and conveniently applies identically on the semantics side, both diagrammed in \autoref{fig:VectorBinop both}.
+Helper functions handle slicing lanes, while the \texttt{vector_binop_aux} applies a binary operation to each lane and recursively builds up the result value.
+
+\depgraph[.5]{VectorBinop both}{Dependency graph of functions in Symbolic.v and Semantics.v to implement vector symbolic execution and semantics. }
+
+% #CODESHOT vector_binop_aux
+% Fixpoint vector_binop_aux {opts : symbolic_options_computed_opt} {descr : description}
+%     (v1 v2 : idx) (lane_op : op) (lane_idx : nat) (num_remaining : nat)
+%     (lane_width : Z) (acc : idx) : M idx :=
+%     match num_remaining with
+%     | O => ret acc
+%     | S n =>
+%         lane_val <- make_lane v1 v2 lane_op lane_idx lane_width;
+%         new_acc <- App (
+%             set_slice (N.of_nat lane_idx * Z.to_N lane_width) (Z.to_N lane_width),
+%             [acc; lane_val]);
+%         vector_binop_aux v1 v2 lane_op (S lane_idx) n lane_width new_acc
+%     end.
+% #END
+\codeshot{vector_binop_aux}
+
+This makes the symbolic execution of most instructions simple to implement.
+For example, \texttt{vpaddq} can be implemented as follows:
+
+% #CODESHOT SymexNormalInstruction2
+% Definition SymexNormalInstruction {opts : symbolic_options_computed_opt} {descr:description}
+%     (instr : NormalInstruction) : M unit :=
+%     match instr.(Syntax.op), instr.(args) with
+%     ...
+%    | vpaddq, [dst; src1; src2] => (* packed add of quadwords *)
+%         let num_lanes := (op_size / 64)%N in
+%         v1 <- GetOperand src1;
+%         v2 <- GetOperand src2;
+%         result <- App ((vadd 64 num_lanes), [v1; v2]);
+%         SetOperand dst result
+%     ...
+% #END
+\codeshot{SymexNormalInstruction2}
+
+This pattern generalizes beyond binary operations.
+Instructions like \texttt{vpbroadcastq} (replicate one lane to all lanes), \texttt{vpblendd} (select lanes from two sources by bitmask), and \texttt{vpmuludq} (multiply lower 32 bits of each 64-bit lane) all admit a similar decomposition: slice the relevant parts of each source, apply a per-lane operation, and write results back via \texttt{set\_slice} in some order.
+The differences lie only in how many sources are read, what operation is applied, and whether extra slicing is needed within each lane.
+We describe the proof strategy for these variations in \autoref{ch:Proofs}.
+
+
+\section{Rewrite Rules}
+\label{sec:rewriting}
+
+For the equivalence checker to succeed, a set of rewrite rules must reduce semantically equivalent computations to the same form.
+We first consider the rewrite rules needed for the atomic vector operation approach from \autoref{sec:atomic-op}.
+If one program uses \texttt{vpaddq} (emitting a single \texttt{vadd 64 4} node) and an equivalent program performs four scalar 64-bit additions, the rewrite system must contain rules that bridge these two representations, most likely by expanding \texttt{vadd} into per-lane scalar additions, or by recognizing the per-lane pattern and folding it into a \texttt{vadd}.
+
+Because rewrite rules pattern-match on specific compositions of operations in the DAG, the system must account for unexpected equivalent programs that use our new vector ops at arbitrary depths.
+This task becomes especially difficult when vector ops and slice operations compose: for example, consider the composition \texttt{slice(vadd(set_slice(YMM, v1), set_slice(YMM, v2)))}, which packs two scalars into YMM registers, adds the YMMs lane-wise, then extracts a single lane.
+Recognizing that this is equivalent to a plain scalar addition \texttt{v1 + v2} requires the rewrite system to look three layers deep past the outermost slice.
+
+We initially tried this approach with rules about slicing into the result of vector operations, for example:
+
+% #CODESHOT slice_vadd
+% (* Decompose a slice of a vector add into a scalar add of slices. *)
+% Definition slice_vadd (d : dag) :=
+%   fun e => match e with
+%     ExprApp (slice lo lw, [ExprApp (vadd lw' nl, [v1; v2])]) =>
+%       if N.eqb lw lw' && N.eqb (lo mod lw)%N 0%N && N.leb (lo + lw) (lw' * nl) && N.ltb 0 lw
+%       then ExprApp (add lw, [coalescing_slice lo lw v1; coalescing_slice lo lw v2])
+%       else e | _ => e end%bool%N.
+% #END
+\codeshot{slice_vadd}
+
+Notice this ended up requiring the \texttt{coalescing_slice} helper function:
+
+% #CODESHOT coalescing_slice
+% (* If v = slice lo2 s2 [e'] and lo+lw <= s2, produce slice (lo2+lo) lw [e'] instead. *)
+% Definition coalescing_slice (lo lw : N) (v : expr) : expr :=
+%   match v with
+%   | ExprApp (slice lo2 s2, [e']) =>
+%       if N.leb (lo + lw) s2 then ExprApp (slice (lo2 + lo) lw, [e'])
+%       else ExprApp (slice lo lw, [v])
+%   | _ => ExprApp (slice lo lw, [v])
+%   end%N.
+% #END
+\codeshot{coalescing_slice}
+
+to handle nested slices coming out of the \texttt{slice_vadd} rule.
+
+In fact, we ended up adding this rule as well based on empirical testing:
+
+% #CODESHOT slice_tower_normalize
+% (* Recursively normalize (slice lo sz) over nested slice/set_slice towers,
+% peeling three kinds of layers at once:
+% - nested slice lo2 s2: combine offsets to (lo2+lo, sz, e')
+% - disjoint set_slice lo2 s2: descend into base
+% - containing set_slice lo2 s2: descend into val with adjusted lo
+% Needed for gather patterns (vmovq -> vpunpcklqdq -> vinserti128) that
+% interleave slice and set_slice layers *)
+% Fixpoint slice_tower_normalize (lo sz : N) (inner : expr) (fuel : nat) {struct fuel} : expr :=
+%   match fuel with
+%   | O => ExprApp (slice lo sz, [inner])
+%   | S fuel' =>
+%     match inner with
+%     | ExprApp (slice lo2 s2, [e']) =>
+%         if N.leb (lo + sz) s2
+%         then slice_tower_normalize (lo2 + lo) sz e' fuel'
+%         else ExprApp (slice lo sz, [inner])
+%     | ExprApp (set_slice lo2 s2, [base; val]) =>
+%         if (N.leb (lo + sz) lo2 || N.leb (lo2 + s2) lo)%bool
+%         then slice_tower_normalize lo sz base fuel'
+%         else if (N.leb lo2 lo && N.leb (lo + sz) (lo2 + s2))%bool
+%         then slice_tower_normalize (lo - lo2) sz val fuel'
+%         else ExprApp (slice lo sz, [inner])
+%     | _ => ExprApp (slice lo sz, [inner])
+%     end
+%   end%N.
+% #END
+\codeshot{slice_tower_normalize}
+
+We were able to verify simple vector programs with these rules, but each new instruction pattern required additional ad-hoc rules, confirming that this approach would not scale.
+
+Since we did not adopt the atomic vector op approach, the \texttt{slice\_vadd} rule was abandoned.
+The \texttt{coalescing\_slice} and \texttt{slice\_tower\_normalize} rules were kept, since they are sound simplifications that can only help.
+
+The lane decomposition approach that we ended up using still requires rewrite rules.
+Writing a lane value into a vector register produces a \texttt{set\_slice} node, and reading it back produces a \texttt{slice} node wrapping the previous write.
+Across multiple instructions, these layers compound, and the equivalence checker must simplify them away so that both programs' output indices in the DAG are identical.
+
+The crucial difference from the atomic-op approach is that these rules only need to handle the immediate \texttt{slice}/\texttt{set\_slice} layers introduced by each instruction, rather than recursing into the DAG to unfold earlier vector operations.
+We added three rewrite rules:
+
+\texttt{slice\_slice} collapses nested slices when the inner slice is wider.
+This rule fires when a lane read follows a register read that already sliced from a wider register.
+
+% #CODESHOT slice_slice
+% Definition slice_slice (d : dag) :=
+%   fun e => match e with
+%     ExprApp (slice lo1 s1, [ExprApp (slice lo2 s2, [e'])]) =>
+%       if N.leb (lo1 + s1) s2
+%       then ExprApp (slice (lo2 + lo1) s1, [e'])
+%       else e | _ => e end%N.
+% #END
+\codeshot{slice_slice}
+
+
+\texttt{slice\_set\_slice} extracts a value from a write when the slice range falls within the write range. Crucially, this rule recognizes that reading a lane of a vector register immediately after writing to that lane should return the written value.
+
+% #CODESHOT slice_set_slice
+% Definition slice_set_slice (d : dag) :=
+%   fun e => match e with
+%     ExprApp (slice lo1 s1, [ExprApp (set_slice lo2 s2, [_; e'])]) =>
+%       if N.leb lo2 lo1 && N.leb (lo1 + s1) (lo2 + s2)
+%       then ExprApp (slice (lo1 - lo2) s1, [e'])
+%       else e | _ => e end%bool%N.
+% #END
+\codeshot{slice_set_slice}
+
+\texttt{slice\_set\_slice\_disjoint} skips a write when the ranges do not overlap.
+Every write to a 4-lane YMM register produces a chain of three nested \texttt{set\_slice} nodes (each writing a specific lane), but when reading lane 0, the later writes to lanes 1, 2, and 3 are irrelevant. This rule simplifies this situation using a recursive helper function \texttt{peel\_disjoint\_set\_slices}.
+
+% #CODESHOT slice_set_slice_disjoint
+% Definition slice_set_slice_disjoint (d : dag) :=
+%   fun e => match e with
+%     ExprApp (slice lo1 s1, [ExprApp (set_slice lo2 s2, [base; _])]) =>
+%       if N.leb (lo1 + s1) lo2 || N.leb (lo2 + s2) lo1
+%       then peel_disjoint_set_slices lo1 s1 base 8 
+%       else e | _ => e end%bool%N.
+% #END
+\codeshot{slice_set_slice_disjoint}
+
+% #CODESHOT peel
+% (* Recursively peel disjoint set_slice layers. Needed for YMM (4-lane) operations
+%    where set_slice chains are 3 deep and a single peel isn't enough. *)
+% Fixpoint peel_disjoint_set_slices (lo1 s1 : N) (inner : expr) (fuel : nat) {struct fuel} : expr :=
+%   match fuel with
+%   | O => ExprApp (slice lo1 s1, [inner])
+%   | S fuel' =>
+%     match inner with
+%     | ExprApp (set_slice lo2 s2, [base; _]) =>
+%       if (N.leb (lo1 + s1) lo2 || N.leb (lo2 + s2) lo1)%bool
+%       then peel_disjoint_set_slices lo1 s1 base fuel'
+%       else ExprApp (slice lo1 s1, [inner])
+%     | _ => ExprApp (slice lo1 s1, [inner])
+%     end
+%   end%N.
+% #END
+\codeshot{peel}
+
+
+\paragraph{Pass ordering.}
+Rewrite rules are registered in a pipeline and run in sequence after each instruction.
+The ordering matters: \texttt{slice\_set\_slice} may expose a new \texttt{slice}/\texttt{set\_slice} pattern that \texttt{slice\_set\_slice\_disjoint} can simplify, and vice versa.
+For this reason, both rules appear multiple times in the rewrite pipeline to handle deeply nested patterns that require several rounds of simplification. This ordering was determined empirically by verifying test programs.
+
+\paragraph{Correctness.}
+Each rewrite rule must be proven to preserve DAG semantics: if the original expression evaluates to $v$, the rewritten expression must also evaluate to $v$.
+These proofs are mostly short and mechanical for rules that only inspect one layer of the DAG. For rules like \texttt{slice\_set\_slice\_disjoint} which peel off layers recursively, we use inductive proofs.
+
+
+\section{Batched Field Operations}
+\label{sec:batched}
+
+We implemented several batched field arithmetic operations by hand in assembly, along with corresponding batched specifications that explicitly describe four independent field operations on concatenated inputs.
+For example, the batched addition specification applies the scalar \texttt{addmod} independently to four consecutive field elements:
+
+% #CODESHOT batched_addmod
+%   Definition batched_addmod (a b : list Z) : list Z :=
+%     addmod limbwidth_num limbwidth_den n
+%       (firstn n a) (firstn n b) ++
+%     addmod limbwidth_num limbwidth_den n
+%       (firstn n (skipn n a)) (firstn n (skipn n b)) ++
+%     addmod limbwidth_num limbwidth_den n
+%       (firstn n (skipn (n+n) a)) (firstn n (skipn (n+n) b)) ++
+%     addmod limbwidth_num limbwidth_den n
+%       (firstn n (skipn (n+n+n) a)) (firstn n (skipn (n+n+n) b)).
+% #END
+\codeshot{batched_addmod}
+
+This definition is straightforward: it slices the input lists into four groups of \texttt{n} limbs each, applies the scalar operation to each group independently, and concatenates the results.
+The same pattern applies to \texttt{batched_submod}, \texttt{batched_oppmod}, and \texttt{batched_carrymod}.
+These batched specifications are reified into PHOAS, optimized through the standard pipeline, and then compared against the assembly by the equivalence checker --- exactly the same path as scalar operations.
+
+Currently these batched specifications are written by hand for a fixed batch size of 4 (matching the four 64-bit lanes in a YMM register).
+However, there is no principled reason that batched specifications cannot be automatically derived from scalar versions. A Rocq function could generate a batched specification from any scalar specification by slicing inputs into groups and concatenating outputs, but we did not attempt this.
+
+Batched assembly programs are harder to generalize.
+Addition and subtraction map trivially to \texttt{vpaddq} and \texttt{vpsubq}, and carry propagation can be expressed with shifts and masks (\texttt{vpsrlq}, \texttt{vpandq}).
+However, multiplication is fundamentally different: scalar multiplication produces a 128-bit result from two 64-bit inputs, meaning four independent multiplications simply cannot be performed in parallel without overflowing registers.
+For this reason, \texttt{vpmuludq} only multiplies the lower 32 bits of each lane.
+Full 64-bit SIMD multiplication requires a Karatsuba-like decomposition with multiple \texttt{vpmuludq}, shifts, and additions, producing an assembly program that bears little resemblance to the scalar version.
+Automated assembly generation would therefore require operation-specific lowering strategies, not a simple batching transform. This approach is possible in theory, but extremely nontrivial.
+
+
+\chapter{Proofs}
+\label{ch:Proofs}
+
+Having implemented vector instructions in symbolic execution, we also need to prove correspondence between symbolic and semantic layers, which is fairly straightforward due to design choices in representing execution. Our proof strategy throughout is to isolate reasoning about each function to a single lemma, avoiding leakage of complexity between abstraction layers. 
+
+
+\section{Binops}
+
+Consider the two implementations of the \texttt{vpaddq} instruction:
+
+% #CODESHOT vpaddq_symbolic
+% (* Symbolic execution of vpaddq, in Symbolic.v *)
+%  SymbolicVector.SymexVectorBinOp dst src1 src2 (add 64) 64
+% #END
+\codeshot{vpaddq_symbolic}
+
+\vspace{-1em}
+
+% #CODESHOT vpaddq_semantic
+% (* Concrete semantics of vpaddq, in Semantics.v *)
+% let num_lanes := (N.to_nat (N.div s 64)) in
+% SemanticVector.DenoteVectorBinOp sa s st dst src1 src2
+%    (fun a b => Z.land (a + b) (Z.ones 64)) num_lanes 64
+% #END
+\codeshot{vpaddq_semantic}
+
+The form of these two implementations already exemplifies why the abstractions in \autoref{fig:VectorBinop both} are so powerful. Rather than having to reason about correspondence of addition specifically, we need only prove that \texttt{SymexVectorBinOp} and \texttt{DenoteVectorBinOp} have equivalent effects on the symbolic and machine states, respectively. 
+
+Because these two functions decompose with the same recursive structure, we can simply prove correspondence between horizontal layers in \autoref{fig:VectorBinop both}, as \question{diagrammed}{Im working on generating one with larger font} in \autoref{fig:SymexVectorBinopR}.
+
+\depgraph[.4]{SymexVectorBinopR}{Dependency graph of correspondence lemmas relating the symbolic and concrete semantics of lane-wise binary vector operations. Each lemma relates one layer of abstraction from each side.}
+
+As one illustrative example, \texttt{make_lane_R} relates the two \texttt{make_lane} implementations:
+
+% #CODESHOT make_lane_R
+%   (* make_lane computes one lane of a binop: lane_op v1[i] v2[i] *)
+%   Lemma make_lane_R {opts : symbolic_options_computed_opt} {descr : description}
+%     s m s' (HR : R s m) res
+%     (i1 i2 : idx) (v1 v2 : Z)
+%     (Hv1 : eval s i1 v1) (Hv2 : eval s i2 v2)
+%     (lane_op : op) (* symbolic lane-wise operation *)
+%     (binop : Z -> Z -> Z) (* semantic lane-wise operation *)
+%     (Hop : interprets_as_binop lane_op binop) (* relating the two operations *)
+%     (lane_idx : nat) (lane_width : N) (Hlw : (lane_width > 0)%N)
+%     (H : SymbolicVector.make_lane i1 i2 lane_op lane_idx lane_width s = Success (res, s'))
+%     : eval s' res (SemanticVector.make_lane v1 v2 binop lane_idx (Z.of_N lane_width))
+%     /\ R s' m /\ s :< s'.
+%   Proof using Type.
+%     unfold SymbolicVector.make_lane, SemanticVector.make_lane in *. repeat step_symex.
+%     eapply extract_lane_R in HSl1; try eassumption.
+%     eapply extract_lane_R in HSl2; try eassumption.
+% 	  step_symex. solve_R_subgoals. eauto.
+%   Qed.
+% #END
+\codeshot{make_lane_R}
+
+Notice that this proof unfolds exactly one layer of definitions and references the correspondence lemma for \texttt{extract_lane}. 
+Also note the precondition \texttt{interprets_as_binop} in the statement of \texttt{make_lane_R}. This proposition states that the \texttt{lane_op} in the DAG actually represents the same operation as the semantic \texttt{binop}.
+
+% #CODESHOT interprets_as_binop
+% Definition interprets_as_binop (o : op) (f : Z -> Z -> Z) : Prop :=
+% forall a b, interp_op o [a; b] = Some (f a b).
+% #END
+\codeshot{interprets_as_binop}
+
+This definition admits very simple (but subtly different) proofs for each binary instruction we implemented.
+
+% #CODESHOT interprets_ex
+%   Lemma interprets_as_add s :
+%       interprets_as_binop (add s) (fun a b => Z.land (a + b) (Z.ones (Z.of_N s))).
+%       Proof. intros a b. cbn [interp_op fold_right]. rewrite Z.add_0_r. reflexivity. Qed.
+
+%   Lemma interprets_as_sub s :
+%       interprets_as_binop (sub s) (fun a b => Z.land (a - b) (Z.ones (Z.of_N s))).
+%       Proof. intros a b. cbn [interp_op fold_right]. reflexivity. Qed.
+%   ...
+% #END
+\codeshot{interprets_ex}
+
+Along with the main structural lemmas, these facts gives us all the building blocks needed to prove correspondence for all binary instructions. In fact, these proofs all collapse to a single line:
+
+% #CODESHOT binops_proof
+% (* all binops *)
+% all: eapply SymexVectorBinOp_R; try (eassumption || lia); auto with interprets_as.
+% #END
+\codeshot{binops_proof}
+
+which applies the top-level correspondence lemma \texttt{SymexVectorBinop_R}, then clears the preconditions using a hint database of all the \texttt{interprets_as_[op]} lemmas.
+
+We stated and proved analogous lemmas for unary operations (a single source and destination, independent operation over lanes).
+
+\section{Non-binops}
+
+Not all instructions operate independently and identically on each lane of source and destination values. \texttt{vpbroadcastq} broadcasts one lane to other lanes of a register; \texttt{vpblendd} picks lanes from two source registers based on a bitmask; \texttt{vpmuludq} multiplies the lower 32 bits of each lane, operating independently across lanes but requiring an extra slicing step that doesn't fit neatly into our previous abstraction.
+
+While these instructions don't fit the same binop pattern, they can all be decomposed into repeated lane-wise steps. Mirroring this structure, we used recursive functions to build up each lane of the output for all such instructions, and continued the principle of proving correspondence after each step.
+
+As an illustrative example, the blend fixpoint does one step of multiplexing between source registers for a single lane, then recursively blends the remaining lanes:
+
+% #CODESHOT blend
+% (* Blend: for each lane, pick from v1 or v2 based on immediate mask bit *)
+% Fixpoint blend_aux {opts : symbolic_options_computed_opt} {descr : description}
+%   (v1 v2 : idx) (mask : Z) (lane_idx num_remaining : nat)
+%   (lane_width : N) (acc : idx) : M idx :=
+%   match num_remaining with
+%   | O => ret acc
+%   | S n =>
+%     let src := if Z.testbit mask (Z.of_nat lane_idx) then v2 else v1 in
+%     lane_val <- App (slice (N.of_nat lane_idx * lane_width) lane_width, [src]);
+%     new_acc <- App (set_slice (N.of_nat lane_idx * lane_width) lane_width, [acc; lane_val]);
+%     blend_aux v1 v2 mask (S lane_idx) n lane_width new_acc
+%   end.
+% #END
+\codeshot{blend}
+
+Following the same strategy as for binops, we prove a correspondence lemma for \texttt{blend_aux} by induction on the number of remaining lanes. Each inductive step relates one lane's slice-and-insert to its semantic counterpart.
+
+% #CODESHOT blend_aux_R
+% Lemma blend_aux_R {opts : symbolic_options_computed_opt} {descr : description}
+%       s m (HR : R s m)
+%       (i1 i2 : idx) (v1 v2 : Z)
+%       (Hv1 : eval s i1 v1) (Hv2 : eval s i2 v2)
+%       (mask : Z)
+%       (lane_idx num_remaining : nat)
+%       (lane_width : N) (Hlw : (lane_width > 0)%N)
+%       (acc : idx) (acc_val : Z) (Hacc : eval s acc acc_val)
+%       (Hacc_hi : Z.shiftr acc_val (Z.of_nat lane_idx * Z.of_N lane_width) = 0)
+%       res s'
+%       (H : SymbolicVector.blend_aux i1 i2 mask lane_idx num_remaining lane_width acc s
+%           = Success (res, s'))
+%   : R s' m /\ s :< s' /\
+%     eval s' res
+%       (Z.lor acc_val
+%         (SemanticVector.blend_aux v1 v2 mask lane_idx num_remaining
+%           (Z.of_N lane_width))).
+% #END
+\codeshot{blend_aux_R}
+
+For this and similar lemmas relating one step of symbolic execution, it makes sense to define a tactic like \texttt{step_blend} that applies the lemma and automatically clears preconditions. With this tactic, the final proof of correspondence for \texttt{vpblendd} reduces to a single line:
+
+% #CODESHOT vpblendd_proof
+% (* vpblendd *)
+% { step_blend. step_symex. cleanup. exists m0. solve_R_subgoals. }
+% #END
+\codeshot{vpblendd_proof}
+
+Analogous recursive lemmas, step tactics, and one-line proofs were used for \texttt{vpbroadcastq}, \texttt{vpmuludq}, \texttt{vpunpcklqdq}, and \texttt{vzeroupper}.
+
+A few instructions don't decompose into repeated lane-wise steps at all. \texttt{vpextrq}, \texttt{vextracti128}, and \texttt{vinserti128} each extract or insert a single fixed-width chunk at a constant offset, so their symbolic execution is just a single \texttt{slice} or \texttt{set_slice} operation. 
+
+For example, \texttt{vpextrq} extracts a single 64-bit lane from a 128-bit XMM register at an immediate-specified index:
+
+% #CODESHOT vpextrq_symex
+%   | vpextrq, [dst; src; imm] =>
+%     v <- GetOperand (s:=128%N) src;
+%     imm_val <- GetOperand imm;
+%     lane <- RevealConst imm_val;
+%     result <- App (slice (Z.to_N lane * 64)%N 64, [v]);
+%     SetOperand (s:=64%N) dst result
+% #END
+\codeshot{vpextrq_symex}
+
+The resulting correspondence goals are pure bitvector equalities, which Rocq's \texttt{bitblast} tactic discharges automatically:
+
+% #CODESHOT outlier_proof
+% (* vpextrq, vextracti128, vinserti128 *)
+% all: normalize_NZ; rewrite Z2N.id in *;
+%      try solve [eapply DenoteOperand_nonneg; eassumption];
+%      bitblast.Z.bitblast.
+% #END
+\codeshot{outlier_proof}
+
+
+\section{Proof Automation}
+\label{sec:proof-automation}
+
+Working on such a large project necessitates proofs and tactics which are modular, intuitive, and robust to small changes in definitions or other tactics.
+Existing code provided some proof automation through the \texttt{step_symex} tactic, which steps through symbolic execution in the hypotheses to deduce relevant information, but many existing proofs were still extremely verbose and difficult to refactor. 
+
+Our approach to proof automation focused on tactics that were:
+  \begin{itemize}
+      \item \textbf{Idempotent}: repeated application cannot change the goal state beyond the first.
+      \item \textbf{Pattern-targeted}: each tactic matches on a specific goal shape and is inert otherwise.
+      \item \textbf{Unidirectional}: transformations only move toward solved goals, so tactics cannot undo each other's progress.
+  \end{itemize}
+
+One example is \texttt{normalize_NZ}, which canonicalizes integer arithmetic expressions through many rewrites (commutativity and associativity, identity elements, etc.), making equality proofs between two such expressions trivial.
+This has the added benefit that lemmas involving such expressions have a standardized way of stating them, so no extra transformation is needed to apply these lemmas.
+
+Another illustrative example is the \texttt{solve\_subsumed} tactic, designed to solve a frequent pattern in every correspondence proof: 
+
+\[
+  \frac{s \prec s_0 \quad s_0 \prec s_1 \quad \cdots \quad s_n \prec s'}{s \prec
+   s'}
+  \]
+
+This is theoretically simple because $\prec$ is transitive and reflexive, but not simple enough for Rocq to independently solve.
+One way to solve this is using an all-purpose search like \texttt{eauto}, which works but is extremely opaque and can have downstream effects if it is called in the wrong goal state by accident.
+A tactic which surgically matches on the goal and applies the appropriate transformations avoids both issues:
+
+% #CODESHOT solvesubsumed
+% Ltac solve_subsumed ::=
+%     match goal with
+%     | |- _ :< _ =>
+%       solve [ eassumption
+%             | apply subsumed_refl
+%             | repeat (eapply subsumed_trans; [eassumption|]); eapply subsumed_refl ]
+%     end.
+% #END
+\codeshot{solvesubsumed}
+
+These principles made proofs for vector instructions extremely modular and interpretable, and we attempted to refactor many existing proofs similarly. This was possible for many helper lemmas, but not for the main correspondence proof of scalar instructions, which were far too sensitive to any changes and would require far more dedicated effort. As a \question{practical middle-ground}{Trying to explain that this was a difficult tradeoff, and future work could consolidate the two, but isolation is an ok solution since this is all proofs and just needs to compile}, the two instruction sets share many lower-level lemmas but use completely separate, self-contained sets of tactics at the higher level. 
+
+
+
+\chapter{Results}
+\label{ch:results}
+
+Prior to this work, Fiat Cryptography's equivalence checker could only verify scalar x86-64 assembly.
+With the extensions described in the preceding chapters, it now handles AVX2 vector instructions through the full pipeline: parsing, symbolic execution, rewriting, and equivalence checking.
+
+We evaluate our implementation on a suite of hand-written AVX2 assembly programs that implement field arithmetic operations for Curve25519.
+Each test verifies that the assembly program computes the same function as the corresponding Fiat Cryptography specification, using the equivalence checker.
+
+Our test suite, listed in \autoref{tab:results}, covers both limb-parallel and batched SIMD programs, as described in \autoref{sec:avx-background}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Test name} & \textbf{Category} & \textbf{Operation} \\
+\midrule
+avx-xmm-add        & limb-parallel (xmm) & add \\
+avx-ymm-add        & limb-parallel (ymm) & add \\
+avx-xmm-sub        & limb-parallel (xmm) & sub \\
+avx-ymm-sub        & limb-parallel (ymm) & sub \\
+batch-avx-add       & batch & batch\_add \\
+batch-avx-sub       & batch & batch\_sub \\
+batch-avx-opp       & batch & batch\_opp \\
+batch-avx-carry     & batch & batch\_carry \\
+batch-avx-carry-add & batch & batch\_carry\_add \\
+batch-avx-carry-sub & batch & batch\_carry\_sub \\
+batch-avx-carry-opp & batch & batch\_carry\_opp \\
+\bottomrule
+\end{tabular}
+\caption{Equivalence checking test suite for AVX2 assembly programs against Fiat Cryptography specifications. All programs target Curve25519 with 64-bit limbs.}
+\label{tab:results}
+\end{table}
+
+Two representative example programs are shown in \autoref{fig:simple-add} and \autoref{fig:batch-add}.
+
+% #CODESHOT simple-add lang=asm
+% SECTION .text
+%     GLOBAL fiat_25519_add
+%
+% fiat_25519_add:
+%     ; limbs 0-1: load 128 bits (two 64-bit limbs), add, store
+%     vmovdqu xmm0, [rsi]
+%     vmovdqu xmm1, [rdx]
+%     vpaddq  xmm0, xmm0, xmm1
+%     vmovdqu [rdi], xmm0
+%     ; limbs 2-3: same pattern at offset +16
+%     vmovdqu xmm0, [rsi + 16]
+%     vmovdqu xmm1, [rdx + 16]
+%     vpaddq  xmm0, xmm0, xmm1
+%     vmovdqu [rdi + 16], xmm0
+%     ; limb 4: single 64-bit limb via vmovq
+%     vmovq   xmm0, [rsi + 32]
+%     vmovq   xmm1, [rdx + 32]
+%     vpaddq  xmm0, xmm0, xmm1
+%     vmovq   [rdi + 32], xmm0
+%     ret
+% #END
+\codeshotfig{simple-add}{XMM vectorized field addition for Curve25519. Adds five 64-bit limbs using 128-bit \texttt{vpaddq} instructions, processing two limbs per iteration with a single-limb tail.}
+
+
+% #CODESHOT batch-add lang=asm
+% SECTION .text
+%     GLOBAL fiat_25519_batch_add
+
+% fiat_25519_batch_add:
+%     ; group 0: limb 0 of all 4 elements
+%     vmovdqu ymm0, [rsi]
+%     vpaddq  ymm0, ymm0, [rdx]
+%     vmovdqu [rdi], ymm0
+%     ; group 1: limb 1 of all 4 elements
+%     vmovdqu ymm1, [rsi + 32]
+%     vpaddq  ymm1, ymm1, [rdx + 32]
+%     vmovdqu [rdi + 32], ymm1
+%     ; group 2: limb 2 of all 4 elements
+%     vmovdqu ymm2, [rsi + 64]
+%     vpaddq  ymm2, ymm2, [rdx + 64]
+%     vmovdqu [rdi + 64], ymm2
+%     ; group 3: limb 3 of all 4 elements
+%     vmovdqu ymm3, [rsi + 96]
+%     vpaddq  ymm3, ymm3, [rdx + 96]
+%     vmovdqu [rdi + 96], ymm3
+%     ; group 4: limb 4 of all 4 elements
+%     vmovdqu ymm4, [rsi + 128]
+%     vpaddq  ymm4, ymm4, [rdx + 128]
+%     vmovdqu [rdi + 128], ymm4
+%     vzeroupper
+%     ret
+% #END
+\codeshotfig{batch-add}{Batched YMM field addition for Curve25519. Each 256-bit \texttt{vpaddq} adds the same limb position across four independent field elements stored in structure-of-arrays layout.}
+
+
+The limb-parallel example (\autoref{fig:simple-add}) demonstrates basic XMM support: 128-bit loads, lane-wise addition, and a 64-bit tail handled by \texttt{vmovq}. 
+The batched example (\autoref{fig:batch-add}) exemplifies the full YMM pipeline: 256-bit loads and stores, memory source operands in \texttt{vpaddq}, and \texttt{vzeroupper} to avoid AVX/SSE transition \question{penalties}{This feels thin for a results section, should I include some qualitative observations or anything else?}.
+
+
+\chapter{Discussion and Future Work}
+\label{ch:discussion}
+
+This thesis extended Fiat Cryptography's equivalence checker from scalar-only x86-64 to a subset of AVX2 enabling SIMD field arithmetic.
+Our additions include refactored register and memory infrastructure for 128-bit and 256-bit operands, symbolic execution and concrete semantics for over 20 AVX2 instructions, verified correspondence proofs for all implemented instructions, rewrite rules for simplifying vector-induced DAG patterns, and a test suite of verified vectorized field arithmetic programs.
+
+Two limitations are worth noting.
+First, the rewrite system is best-effort: rules are syntactic pattern matches on DAG structure, determined empirically.
+Some equivalent programs may not reduce to the same DAG form if they use instruction sequences the rules do not anticipate.
+This limitation could be addressed by adopting a full E-graph with union-find, but the current approach has been sufficient in practice.
+Second, this work only verifies externally hand-written assembly. There is currently no way to automatically synthesize vectorized programs through Fiat Cryptography or CryptOpt.
+
+\section{Future Work}
+
+\paragraph{Automated batched specifications.}
+We wrote batched versions of cryptographic primitives in both PHOAS and assembly. 
+The PHOAS specifications could be fully automated, as described in \autoref{sec:batched}.
+
+\paragraph{CryptOpt integration.}
+The most impactful next step would be integrating AVX2 support into CryptOpt's stochastic optimizer, enabling it to generate and verify optimized vector assembly automatically.
+Stochastic optimization has the potential to discover extremely unintuitive implementations using vector instructions.
+
+\paragraph{New synthesis/optimization pipelines.}
+Following the same principle but a completely new approach, an LLM could serve a similar role to CryptOpt by generating untrusted assembly code, relying on the equivalence checker to verify correctness. 
+
+\paragraph{Performance benchmarking.}
+Our test programs are hand-written to exercise the equivalence checker, not to maximize throughput.
+Comparing the performance of verified vectorized implementations against scalar baselines and unverified SIMD code would quantify the practical benefit of this infrastructure.
+
+\paragraph{AVX-512.}
+Our work generalizes naturally to 512-bit ZMM registers. Our refactored memory model, lane decomposition, and rewrite rules are all parameterized by width, and adding AVX-512 support would be straightforward. We chose to focus on AVX2 because it is more widely supported in modern hardware.

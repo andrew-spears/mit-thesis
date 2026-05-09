@@ -3,7 +3,14 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Dependency graph of functions in Symbolic.v and Semantics.v to implement vector symbolic execution and semantics. }}{31}{figure.5.1}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Dependency graph of correspondence lemmas relating the symbolic and concrete semantics of lane-wise binary vector operations. Each lemma relates one layer of abstraction from each side.}}{40}{figure.6.1}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces XMM vectorized field addition for Curve25519. Adds five 64-bit limbs using 128-bit \texttt {vpaddq} instructions, processing two limbs per iteration with a single-limb tail.}}{46}{figure.7.1}%
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Batched YMM field addition for Curve25519. Each 256-bit \texttt {vpaddq} adds the same limb position across four independent field elements stored in structure-of-arrays layout.}}{47}{figure.7.2}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\addvspace {10\p@ }
-\addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Dependency graph of \texttt {GetOperand}, which resolves a source operand to a DAG index by dispatching on operand type (register, memory, immediate).}}{51}{figure.A.1}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Dependency graph of \texttt {SetOperand}, which writes a DAG index to a destination operand, handling register aliasing and memory stores.}}{52}{figure.A.2}%
+\contentsline {figure}{\numberline {A.3}{\ignorespaces Dependency graph of \texttt {GetOperand\_R}, the correspondence lemma relating symbolic \texttt {GetOperand} to concrete operand evaluation.}}{53}{figure.A.3}%

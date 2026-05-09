@@ -1,13 +1,41 @@
-\contentsline {frontmatter}{List of Figures}{11}{listoffigures}%
-\contentsline {frontmatter}{List of Tables}{13}{listoftables}%
-\contentsline {chapter}{\numberline {1}Introduction}{15}{chapter.1}%
-\contentsline {chapter}{\numberline {2}Background}{17}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Register Refactoring}{19}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Register Types}{19}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Register get/set}{20}{section.3.2}%
-\contentsline {chapter}{\numberline {4}Memory Refactoring}{23}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Symbolic Execution and Rewriting for Vector Instructions}{27}{chapter.5}%
-\contentsline {chapter}{\numberline {5}Results}{23}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Discussion and Future Work}{25}{chapter.6}%
-\contentsline {chapter}{\numberline {A}Appendix A}{27}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Appendix B}{29}{appendix.B}%
+\contentsline {frontmatter}{List of Figures}{9}{listoffigures}%
+\contentsline {frontmatter}{List of Tables}{11}{listoftables}%
+\contentsline {chapter}{\numberline {1}Introduction}{13}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Background}{15}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Cryptography and Limb Representation}{15}{section.2.1}%
+\contentsline {section}{\numberline {2.2}AVX2 and SIMD Instructions}{15}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Rocq Theorem Prover}{16}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Fiat Cryptography}{16}{section.2.4}%
+\contentsline {section}{\numberline {2.5}CryptOpt}{17}{section.2.5}%
+\contentsline {section}{\numberline {2.6}The Equivalence Checker}{17}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Related Work}{18}{section.2.7}%
+\contentsline {chapter}{\numberline {3}System Architecture}{21}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Symbolic Execution}{21}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Correspondence}{22}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Infrastructure for Wide Operands}{23}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Register Types}{23}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Register Read/Writes}{24}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Memory Model}{25}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Multi-Word Loads and Stores}{27}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Symbolic Execution for Vector Instructions}{29}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Two Approaches}{29}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Initial Attempt: Atomic Vector Ops}{29}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Adopted Approach: Lane Decomposition in Symbolic Execution}{30}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Rewrite Rules}{32}{section.5.4}%
+\contentsline {paragraph}{Pass ordering.}{36}{section*.5}%
+\contentsline {paragraph}{Correctness.}{36}{section*.6}%
+\contentsline {section}{\numberline {5.5}Batched Field Operations}{36}{section.5.5}%
+\contentsline {chapter}{\numberline {6}Proofs}{39}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Binops}{39}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Non-binops}{41}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Proof Automation}{43}{section.6.3}%
+\contentsline {chapter}{\numberline {7}Results}{45}{chapter.7}%
+\contentsline {chapter}{\numberline {8}Discussion and Future Work}{49}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Future Work}{49}{section.8.1}%
+\contentsline {paragraph}{Automated batched specifications.}{49}{section*.7}%
+\contentsline {paragraph}{CryptOpt integration.}{49}{section*.8}%
+\contentsline {paragraph}{New synthesis/optimization pipelines.}{49}{section*.9}%
+\contentsline {paragraph}{Performance benchmarking.}{49}{section*.10}%
+\contentsline {paragraph}{AVX-512.}{50}{section*.11}%
+\contentsline {chapter}{\numberline {A}Dependency Graphs}{51}{appendix.A}%
+\contentsline {backmatter}{References}{55}{appendix*.12}%

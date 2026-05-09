@@ -60,6 +60,15 @@
 \usepackage{listings}%   documentation is here https://ctan.org/pkg/listings
 \usepackage{minted}
 \usepackage{todonotes}
+\usepackage[normalem]{ulem}
+\usepackage[strings]{underscore}
+% \question{underlined sentence}{question for advisor}
+% Underlines the sentence in red and adds a red footnote with the question.
+% Use \texttt{...} inside (not \verb|...|, which can't appear in macro args).
+\newcommand{\question}[2]{%
+  {\color{red}#1}%
+  \footnote{\color{red}\textbf{Q:} #2}%
+}
 
 
 %% Set chemical formulas nicely
@@ -222,13 +231,32 @@
 
 
 
-\includeonly{chapter3, chapter4, chapter5}
+% \includeonly{body}
 %   for usage of includeonly, see https://latexref.xyz/_005cinclude-_0026-_005cincludeonly.html
 
 \newcommand{\codeshot}[2][0.3]{%
-  \noindent\includegraphics*[scale=#1]{code-screenshots/#2}\par
+  \noindent\includegraphics*[scale=#1]{code-screenshots/#2.png}\par
 }
 
+\newcommand{\codeshotfig}[3][0.3]{%
+\begin{figure}[h]
+  \noindent\includegraphics*[scale=#1]{code-screenshots/#2.png}
+  \caption{#3}
+  \label{fig:#2}
+  \end{figure}
+}
+
+\newcommand{\depgraph}[3][0.5]{%
+  \begin{figure}[h]
+    \centering
+    \includegraphics*[scale=#1]{dep_graphs/#2.png}
+    \caption{#3}
+    \label{fig:#2}
+  \end{figure}
+}
+
+
+\newcommand{\bind}{\texttt{\textbf{$\leftarrow$}}}
 
 %%%%%%%%%%%%%%  End preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -236,7 +264,7 @@
 \begin{document}
 %%% edit the following commands to match your thesis %%%%%%%%%%
 
-\title{TODO: Thesis Title}
+\title{Verified Equivalence Checking for Vector Assembly in Fiat Cryptography}
 
 % \Author{Author full name}{Author department}[Author's first PREVIOUS degree][Author's second PREVIOUS degree][...
 % Note that third, fourth, fifth, and sixth arguments are optional [] and may be omitted
@@ -280,7 +308,7 @@
 
 
 % Date that final thesis is submitted to department
-\ThesisDate{TODO: submission date}
+\ThesisDate{May 15, 2026}
 
 % If at least one thesis reader is included, a committee members page will be automatically generated.
 % The MIT libraries do not set a format for the committee members page, and if you prefer to use your own format,
@@ -366,22 +394,12 @@
 
 %% If you want to use "double spacing", you should start here...
 
-\include{chapter1}% Introduction
-\include{chapter2}% Background
-\include{chapter3}% Register Refactoring
-\include{chapter4}% Generalizing Memory and Register Operations
-\include{chapter5}% Symbolic Execution and Rewriting for Vector Instructions
-\include{chapter6}% Results
-\include{chapter7}% Discussion and Future Work
-
+\include{body}
 
 %%% Appendices of thesis  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \appendix
-\include{appendixa}% listings example (not compatible with tagged pdf, as of Oct. 2025)
-\include{appendixb}% longtable example
-
-
+\include{appendixa}
 %%% Bibliography (biblatex)  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \defbibheading{bibintoc}{\chapter*{#1}\addcontentsline{toc}{backmatter}{\refname}} 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.8.10)  25 APR 2026 15:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.8.10)  9 MAY 2026 18:11
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -679,6 +679,20 @@ File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
 File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
 )
 \c@@todonotes@numberoftodonotes=\count366
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/ulem/ulem.sty
+\UL@box=\box81
+\UL@hyphenbox=\box82
+\UL@skip=\skip62
+\UL@hook=\toks42
+\UL@height=\dimen299
+\UL@pe=\count367
+\UL@pixel=\dimen300
+\ULC@box=\box83
+Package: ulem 2019/11/18
+\ULdepth=\dimen301
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/underscore/underscore.sty
+Package: underscore 2006/09/13
+LaTeX Info: Redefining \_ on input line 42.
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/mhchem/mhchem.sty
 Package: mhchem 2021/12/31 v4.09 for typesetting chemical formulae
  (/usr/local/texlive/2023/texmf-dist/tex/latex/l3kernel/expl3.sty
@@ -689,127 +703,124 @@ Package: l3keys2e 2023-02-02 LaTeX2e option processing using LaTeX3 keys
 Package: xparse 2023-02-02 L3 Experimental document command parser
 )
 Package: chemgreek 2020/01/16 v1.1a interface for upright Greek letters for use in chemistry (CN)
-\l__chemgreek_tmpa_int=\count367
-\g__chemgreek_tmpa_int=\count368
+\l__chemgreek_tmpa_int=\count368
+\g__chemgreek_tmpa_int=\count369
 )
-\l__mhchem_ce_distanceFromLastComma_int=\count369
-\__mhchem_arrow_extPgfLength_skip=\skip62
-\mhchem@minispace@tmp=\skip63
-\mhchem@minibackspace@tmp=\skip64
-\mhchem@bondwidth=\skip65
-\mhchem@bondheight=\skip66
-\mhchem@smallbondwidth@tmpA=\skip67
-\mhchem@smallbondwidth@tmpB=\skip68
-\mhchem@smallbondwidth=\skip69
-\mhchem@bondtmp@minussidebearingleft=\skip70
-\mhchem@bondtmp@minussidebearingright=\skip71
-\l__mhchem_option_version_int=\count370
-\mhchem@option@minusmathsidebearingleft=\dimen299
-\mhchem@option@minusmathsidebearingright=\dimen300
-\mhchem@option@minustextsidebearingleft=\dimen301
-\mhchem@option@minustextsidebearingright=\dimen302
+\l__mhchem_ce_distanceFromLastComma_int=\count370
+\__mhchem_arrow_extPgfLength_skip=\skip63
+\mhchem@minispace@tmp=\skip64
+\mhchem@minibackspace@tmp=\skip65
+\mhchem@bondwidth=\skip66
+\mhchem@bondheight=\skip67
+\mhchem@smallbondwidth@tmpA=\skip68
+\mhchem@smallbondwidth@tmpB=\skip69
+\mhchem@smallbondwidth=\skip70
+\mhchem@bondtmp@minussidebearingleft=\skip71
+\mhchem@bondtmp@minussidebearingright=\skip72
+\l__mhchem_option_version_int=\count371
+\mhchem@option@minusmathsidebearingleft=\dimen302
+\mhchem@option@minusmathsidebearingright=\dimen303
+\mhchem@option@minustextsidebearingleft=\dimen304
+\mhchem@option@minustextsidebearingright=\dimen305
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/lipsum/lipsum.sty
 Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
-\g__lipsum_par_int=\count371
-\l__lipsum_a_int=\count372
-\l__lipsum_b_int=\count373
+\g__lipsum_par_int=\count372
+\l__lipsum_a_int=\count373
+\l__lipsum_b_int=\count374
  (/usr/local/texlive/2023/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex)) (/usr/local/texlive/2023/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen303
-\lightrulewidth=\dimen304
-\cmidrulewidth=\dimen305
-\belowrulesep=\dimen306
-\belowbottomsep=\dimen307
-\aboverulesep=\dimen308
-\abovetopsep=\dimen309
-\cmidrulesep=\dimen310
-\cmidrulekern=\dimen311
-\defaultaddspace=\dimen312
-\@cmidla=\count374
-\@cmidlb=\count375
-\@aboverulesep=\dimen313
-\@belowrulesep=\dimen314
-\@thisruleclass=\count376
-\@lastruleclass=\count377
-\@thisrulewidth=\dimen315
+\heavyrulewidth=\dimen306
+\lightrulewidth=\dimen307
+\cmidrulewidth=\dimen308
+\belowrulesep=\dimen309
+\belowbottomsep=\dimen310
+\aboverulesep=\dimen311
+\abovetopsep=\dimen312
+\cmidrulesep=\dimen313
+\cmidrulekern=\dimen314
+\defaultaddspace=\dimen315
+\@cmidla=\count375
+\@cmidlb=\count376
+\@aboverulesep=\dimen316
+\@belowrulesep=\dimen317
+\@thisruleclass=\count377
+\@lastruleclass=\count378
+\@thisrulewidth=\dimen318
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/tools/array.sty
 Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
-\col@sep=\dimen316
-\ar@mcellbox=\box81
-\extrarowheight=\dimen317
-\NC@list=\toks42
-\extratabsurround=\skip72
-\backup@length=\skip73
-\ar@cellbox=\box82
+\col@sep=\dimen319
+\ar@mcellbox=\box84
+\extrarowheight=\dimen320
+\NC@list=\toks43
+\extratabsurround=\skip73
+\backup@length=\skip74
+\ar@cellbox=\box85
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/tools/dcolumn.sty
 Package: dcolumn 2014/10/28 v1.06 decimal alignment package (DPC)
-) (/usr/local/texlive/2023/texmf-dist/tex/latex/tools/longtable.sty
+)
+(/usr/local/texlive/2023/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
-\LTleft=\skip74
-\LTright=\skip75
-\LTpre=\skip76
-\LTpost=\skip77
-\LTchunksize=\count378
-\LTcapwidth=\dimen318
-\LT@head=\box83
-\LT@firsthead=\box84
-\LT@foot=\box85
-\LT@lastfoot=\box86
-\LT@gbox=\box87
-\LT@cols=\count379
-\LT@rows=\count380
-\c@LT@tables=\count381
-\c@LT@chunks=\count382
-\LT@p@ftn=\toks43
+\LTleft=\skip75
+\LTright=\skip76
+\LTpre=\skip77
+\LTpost=\skip78
+\LTchunksize=\count379
+\LTcapwidth=\dimen321
+\LT@head=\box86
+\LT@firsthead=\box87
+\LT@foot=\box88
+\LT@lastfoot=\box89
+\LT@gbox=\box90
+\LT@cols=\count380
+\LT@rows=\count381
+\c@LT@tables=\count382
+\c@LT@chunks=\count383
+\LT@p@ftn=\toks44
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/microtype.sty
 Package: microtype 2023/03/13 v3.1a Micro-typographical refinements (RS)
-\MT@toks=\toks44
-\MT@tempbox=\box88
-\MT@count=\count383
+\MT@toks=\toks45
+\MT@tempbox=\box91
+\MT@count=\count384
 LaTeX Info: Redefining \noprotrusionifhmode on input line 1059.
 LaTeX Info: Redefining \leftprotrusion on input line 1060.
-\MT@prot@toks=\toks45
+\MT@prot@toks=\toks46
 LaTeX Info: Redefining \rightprotrusion on input line 1078.
 LaTeX Info: Redefining \textls on input line 1368.
-\MT@outer@kern=\dimen319
+\MT@outer@kern=\dimen322
 LaTeX Info: Redefining \textmicrotypecontext on input line 1988.
-\MT@listname@count=\count384
-
-(/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/microtype-pdftex.def
+\MT@listname@count=\count385
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/microtype-pdftex.def
 File: microtype-pdftex.def 2023/03/13 v3.1a Definitions specific to pdftex (RS)
 LaTeX Info: Redefining \lsstyle on input line 902.
 LaTeX Info: Redefining \lslig on input line 902.
-\MT@outer@space=\skip78
+\MT@outer@space=\skip79
 )
 Package microtype Info: Loading configuration file microtype.cfg.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/microtype.cfg
 File: microtype.cfg 2023/03/13 v3.1a microtype main configuration file (RS)
 )) (/usr/local/texlive/2023/texmf-dist/tex/latex/tools/multicol.sty
 Package: multicol 2021/11/30 v1.9d multicolumn formatting (FMi)
-\c@tracingmulticols=\count385
-\mult@box=\box89
-\multicol@leftmargin=\dimen320
-\c@unbalance=\count386
-\c@collectmore=\count387
-\doublecol@number=\count388
-\multicoltolerance=\count389
-\multicolpretolerance=\count390
-\full@width=\dimen321
-\page@free=\dimen322
-\premulticols=\dimen323
-\postmulticols=\dimen324
-\multicolsep=\skip79
-\multicolbaselineskip=\skip80
-\partial@page=\box90
-\last@line=\box91
-\maxbalancingoverflow=\dimen325
-\mult@rightbox=\box92
-\mult@grightbox=\box93
-\mult@firstbox=\box94
-\mult@gfirstbox=\box95
-\@tempa=\box96
-\@tempa=\box97
-\@tempa=\box98
+\c@tracingmulticols=\count386
+\mult@box=\box92
+\multicol@leftmargin=\dimen323
+\c@unbalance=\count387
+\c@collectmore=\count388
+\doublecol@number=\count389
+\multicoltolerance=\count390
+\multicolpretolerance=\count391
+\full@width=\dimen324
+\page@free=\dimen325
+\premulticols=\dimen326
+\postmulticols=\dimen327
+\multicolsep=\skip80
+\multicolbaselineskip=\skip81
+\partial@page=\box93
+\last@line=\box94
+\maxbalancingoverflow=\dimen328
+\mult@rightbox=\box95
+\mult@grightbox=\box96
+\mult@firstbox=\box97
+\mult@gfirstbox=\box98
 \@tempa=\box99
 \@tempa=\box100
 \@tempa=\box101
@@ -843,80 +854,83 @@ Package: multicol 2021/11/30 v1.9d multicolumn formatting (FMi)
 \@tempa=\box129
 \@tempa=\box130
 \@tempa=\box131
-\c@minrows=\count391
-\c@columnbadness=\count392
-\c@finalcolumnbadness=\count393
-\last@try=\dimen326
-\multicolovershoot=\dimen327
-\multicolundershoot=\dimen328
-\mult@nat@firstbox=\box132
-\colbreak@box=\box133
-\mc@col@check@num=\count394
+\@tempa=\box132
+\@tempa=\box133
+\@tempa=\box134
+\c@minrows=\count392
+\c@columnbadness=\count393
+\c@finalcolumnbadness=\count394
+\last@try=\dimen329
+\multicolovershoot=\dimen330
+\multicolundershoot=\dimen331
+\mult@nat@firstbox=\box135
+\colbreak@box=\box136
+\mc@col@check@num=\count395
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/biblatex.sty
 Package: biblatex 2023/03/05 v3.19 programmable bibliographies (PK/MW)
  (/usr/local/texlive/2023/texmf-dist/tex/latex/logreq/logreq.sty
 Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count395
+\lrq@indent=\count396
  (/usr/local/texlive/2023/texmf-dist/tex/latex/logreq/logreq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 ))
-\c@tabx@nest=\count396
-\c@listtotal=\count397
-\c@listcount=\count398
-\c@liststart=\count399
-\c@liststop=\count400
-\c@citecount=\count401
-\c@citetotal=\count402
-\c@multicitecount=\count403
-\c@multicitetotal=\count404
-\c@instcount=\count405
-\c@maxnames=\count406
-\c@minnames=\count407
-\c@maxitems=\count408
-\c@minitems=\count409
-\c@citecounter=\count410
-\c@maxcitecounter=\count411
-\c@savedcitecounter=\count412
-\c@uniquelist=\count413
-\c@uniquename=\count414
-\c@refsection=\count415
-\c@refsegment=\count416
-\c@maxextratitle=\count417
-\c@maxextratitleyear=\count418
-\c@maxextraname=\count419
-\c@maxextradate=\count420
-\c@maxextraalpha=\count421
-\c@abbrvpenalty=\count422
-\c@highnamepenalty=\count423
-\c@lownamepenalty=\count424
-\c@maxparens=\count425
-\c@parenlevel=\count426
-\blx@tempcnta=\count427
-\blx@tempcntb=\count428
-\blx@tempcntc=\count429
-\c@blx@maxsection=\count430
-\blx@maxsegment@0=\count431
-\blx@notetype=\count432
-\blx@parenlevel@text=\count433
-\blx@parenlevel@foot=\count434
-\blx@sectionciteorder@0=\count435
-\blx@sectionciteorderinternal@0=\count436
-\blx@entrysetcounter=\count437
-\blx@biblioinstance=\count438
-\labelnumberwidth=\skip81
-\labelalphawidth=\skip82
-\biblabelsep=\skip83
-\bibitemsep=\skip84
-\bibnamesep=\skip85
-\bibinitsep=\skip86
-\bibparsep=\skip87
-\bibhang=\skip88
+\c@tabx@nest=\count397
+\c@listtotal=\count398
+\c@listcount=\count399
+\c@liststart=\count400
+\c@liststop=\count401
+\c@citecount=\count402
+\c@citetotal=\count403
+\c@multicitecount=\count404
+\c@multicitetotal=\count405
+\c@instcount=\count406
+\c@maxnames=\count407
+\c@minnames=\count408
+\c@maxitems=\count409
+\c@minitems=\count410
+\c@citecounter=\count411
+\c@maxcitecounter=\count412
+\c@savedcitecounter=\count413
+\c@uniquelist=\count414
+\c@uniquename=\count415
+\c@refsection=\count416
+\c@refsegment=\count417
+\c@maxextratitle=\count418
+\c@maxextratitleyear=\count419
+\c@maxextraname=\count420
+\c@maxextradate=\count421
+\c@maxextraalpha=\count422
+\c@abbrvpenalty=\count423
+\c@highnamepenalty=\count424
+\c@lownamepenalty=\count425
+\c@maxparens=\count426
+\c@parenlevel=\count427
+\blx@tempcnta=\count428
+\blx@tempcntb=\count429
+\blx@tempcntc=\count430
+\c@blx@maxsection=\count431
+\blx@maxsegment@0=\count432
+\blx@notetype=\count433
+\blx@parenlevel@text=\count434
+\blx@parenlevel@foot=\count435
+\blx@sectionciteorder@0=\count436
+\blx@sectionciteorderinternal@0=\count437
+\blx@entrysetcounter=\count438
+\blx@biblioinstance=\count439
+\labelnumberwidth=\skip82
+\labelalphawidth=\skip83
+\biblabelsep=\skip84
+\bibitemsep=\skip85
+\bibnamesep=\skip86
+\bibinitsep=\skip87
+\bibparsep=\skip88
+\bibhang=\skip89
 \blx@bcfin=\read5
 \blx@bcfout=\write6
 \blx@langwohyphens=\language87
-\c@mincomprange=\count439
-\c@maxcomprange=\count440
-\c@mincompwidth=\count441
+\c@mincomprange=\count440
+\c@maxcomprange=\count441
+\c@mincompwidth=\count442
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/blx-dm.def
@@ -926,88 +940,88 @@ Package biblatex Info: Trying to load biblatex style data model...
 Package biblatex Info: ... file 'ext-numeric-comp.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count442
-\c@savedafterword=\count443
-\c@annotator=\count444
-\c@savedannotator=\count445
-\c@author=\count446
-\c@savedauthor=\count447
-\c@bookauthor=\count448
-\c@savedbookauthor=\count449
-\c@commentator=\count450
-\c@savedcommentator=\count451
-\c@editor=\count452
-\c@savededitor=\count453
-\c@editora=\count454
-\c@savededitora=\count455
-\c@editorb=\count456
-\c@savededitorb=\count457
-\c@editorc=\count458
-\c@savededitorc=\count459
-\c@foreword=\count460
-\c@savedforeword=\count461
-\c@holder=\count462
-\c@savedholder=\count463
-\c@introduction=\count464
-\c@savedintroduction=\count465
-\c@namea=\count466
-\c@savednamea=\count467
-\c@nameb=\count468
-\c@savednameb=\count469
-\c@namec=\count470
-\c@savednamec=\count471
-\c@translator=\count472
-\c@savedtranslator=\count473
-\c@shortauthor=\count474
-\c@savedshortauthor=\count475
-\c@shorteditor=\count476
-\c@savedshorteditor=\count477
-\c@labelname=\count478
-\c@savedlabelname=\count479
-\c@institution=\count480
-\c@savedinstitution=\count481
-\c@lista=\count482
-\c@savedlista=\count483
-\c@listb=\count484
-\c@savedlistb=\count485
-\c@listc=\count486
-\c@savedlistc=\count487
-\c@listd=\count488
-\c@savedlistd=\count489
-\c@liste=\count490
-\c@savedliste=\count491
-\c@listf=\count492
-\c@savedlistf=\count493
-\c@location=\count494
-\c@savedlocation=\count495
-\c@organization=\count496
-\c@savedorganization=\count497
-\c@origlocation=\count498
-\c@savedoriglocation=\count499
-\c@origpublisher=\count500
-\c@savedorigpublisher=\count501
-\c@publisher=\count502
-\c@savedpublisher=\count503
-\c@language=\count504
-\c@savedlanguage=\count505
-\c@origlanguage=\count506
-\c@savedoriglanguage=\count507
-\c@pageref=\count508
-\c@savedpageref=\count509
-\shorthandwidth=\skip89
-\shortjournalwidth=\skip90
-\shortserieswidth=\skip91
-\shorttitlewidth=\skip92
-\shortauthorwidth=\skip93
-\shorteditorwidth=\skip94
-\locallabelnumberwidth=\skip95
-\locallabelalphawidth=\skip96
-\localshorthandwidth=\skip97
-\localshortjournalwidth=\skip98
-\localshortserieswidth=\skip99
-\localshorttitlewidth=\skip100
-\localshortauthorwidth=\skip101
-\localshorteditorwidth=\skip102
+\c@afterword=\count443
+\c@savedafterword=\count444
+\c@annotator=\count445
+\c@savedannotator=\count446
+\c@author=\count447
+\c@savedauthor=\count448
+\c@bookauthor=\count449
+\c@savedbookauthor=\count450
+\c@commentator=\count451
+\c@savedcommentator=\count452
+\c@editor=\count453
+\c@savededitor=\count454
+\c@editora=\count455
+\c@savededitora=\count456
+\c@editorb=\count457
+\c@savededitorb=\count458
+\c@editorc=\count459
+\c@savededitorc=\count460
+\c@foreword=\count461
+\c@savedforeword=\count462
+\c@holder=\count463
+\c@savedholder=\count464
+\c@introduction=\count465
+\c@savedintroduction=\count466
+\c@namea=\count467
+\c@savednamea=\count468
+\c@nameb=\count469
+\c@savednameb=\count470
+\c@namec=\count471
+\c@savednamec=\count472
+\c@translator=\count473
+\c@savedtranslator=\count474
+\c@shortauthor=\count475
+\c@savedshortauthor=\count476
+\c@shorteditor=\count477
+\c@savedshorteditor=\count478
+\c@labelname=\count479
+\c@savedlabelname=\count480
+\c@institution=\count481
+\c@savedinstitution=\count482
+\c@lista=\count483
+\c@savedlista=\count484
+\c@listb=\count485
+\c@savedlistb=\count486
+\c@listc=\count487
+\c@savedlistc=\count488
+\c@listd=\count489
+\c@savedlistd=\count490
+\c@liste=\count491
+\c@savedliste=\count492
+\c@listf=\count493
+\c@savedlistf=\count494
+\c@location=\count495
+\c@savedlocation=\count496
+\c@organization=\count497
+\c@savedorganization=\count498
+\c@origlocation=\count499
+\c@savedoriglocation=\count500
+\c@origpublisher=\count501
+\c@savedorigpublisher=\count502
+\c@publisher=\count503
+\c@savedpublisher=\count504
+\c@language=\count505
+\c@savedlanguage=\count506
+\c@origlanguage=\count507
+\c@savedoriglanguage=\count508
+\c@pageref=\count509
+\c@savedpageref=\count510
+\shorthandwidth=\skip90
+\shortjournalwidth=\skip91
+\shortserieswidth=\skip92
+\shorttitlewidth=\skip93
+\shortauthorwidth=\skip94
+\shorteditorwidth=\skip95
+\locallabelnumberwidth=\skip96
+\locallabelalphawidth=\skip97
+\localshorthandwidth=\skip98
+\localshortjournalwidth=\skip99
+\localshortserieswidth=\skip100
+\localshorttitlewidth=\skip101
+\localshortauthorwidth=\skip102
+\localshorteditorwidth=\skip103
 Package biblatex Info: Trying to load compatibility code...
 Package biblatex Info: ... file 'blx-compat.def' found.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/blx-compat.def
@@ -1017,19 +1031,19 @@ Package biblatex Info: Trying to load generic definitions...
 Package biblatex Info: ... file 'biblatex.def' found.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/biblatex.def
 File: biblatex.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
-\c@textcitecount=\count510
-\c@textcitetotal=\count511
-\c@textcitemaxnames=\count512
-\c@biburlbigbreakpenalty=\count513
-\c@biburlbreakpenalty=\count514
-\c@biburlnumpenalty=\count515
-\c@biburlucpenalty=\count516
-\c@biburllcpenalty=\count517
+\c@textcitecount=\count511
+\c@textcitetotal=\count512
+\c@textcitemaxnames=\count513
+\c@biburlbigbreakpenalty=\count514
+\c@biburlbreakpenalty=\count515
+\c@biburlnumpenalty=\count516
+\c@biburlucpenalty=\count517
+\c@biburllcpenalty=\count518
 \biburlbigskip=\muskip18
 \biburlnumskip=\muskip19
 \biburlucskip=\muskip20
 \biburllcskip=\muskip21
-\c@smartand=\count518
+\c@smartand=\count519
 )
 Package biblatex Info: Trying to load bibliography style 'ext-numeric-comp'...
 Package biblatex Info: ... file 'ext-numeric-comp.bbx' found.
@@ -1048,12 +1062,12 @@ Package biblatex Info: Trying to load bibliography style 'standard'...
 Package biblatex Info: ... file 'standard.bbx' found.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
 File: standard.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
-\c@bbx:relatedcount=\count519
-\c@bbx:relatedtotal=\count520
+\c@bbx:relatedcount=\count520
+\c@bbx:relatedtotal=\count521
 )
-\extbl@this@introcitewidth=\skip103
-\introcitewidth=\skip104
-\introcitesep=\skip105
+\extbl@this@introcitewidth=\skip104
+\introcitewidth=\skip105
+\introcitesep=\skip106
 Package biblatex Info: Delimiter 'innametitledelim' in context 'bib' already defined, overwriting.
 Package biblatex Info: Delimiter 'innametitledelim' in context 'biblist' already defined, overwriting.
 )
@@ -1074,10 +1088,10 @@ Package biblatex Info: Trying to load citation style 'numeric-comp'...
 Package biblatex Info: ... file 'numeric-comp.cbx' found.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx
 File: numeric-comp.cbx 2023/03/05 v3.19 biblatex citation style (PK/MW)
-\c@cbx@tempcnta=\count521
-\c@cbx@tempcntb=\count522
-\c@cbx@tempcntc=\count523
-\c@cbx@tempcntd=\count524
+\c@cbx@tempcnta=\count522
+\c@cbx@tempcntb=\count523
+\c@cbx@tempcntc=\count524
+\c@cbx@tempcntd=\count525
 Package biblatex Info: Redefining '\cite'.
 Package biblatex Info: Redefining '\parencite'.
 Package biblatex Info: Redefining '\footcite'.
@@ -1121,35 +1135,35 @@ Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
 Package: bookmark 2020-11-06 v1.29 PDF bookmarks (HO)
  (/usr/local/texlive/2023/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
 File: bkm-pdftex.def 2020-11-06 v1.29 bookmark driver for pdfTeX (HO)
-\BKM@id=\count525
+\BKM@id=\count526
 ))
 runsystem(which pygmentize && touch MIT-Thesis.aex)...executed.
 
 runsystem(rm MIT-Thesis.aex)...executed.
 
-\@quotelevel=\count526
-\@quotereset=\count527
- (./MIT-Thesis.aux (./acknowledgments.aux) (./chapter1.aux) (./chapter2.aux) (./chapter3.aux) (./chapter4.aux) (./chapter5.aux) (./chapter6.aux) (./chapter7.aux) (./appendixa.aux) (./appendixb.aux))
+\@quotelevel=\count527
+\@quotereset=\count528
+ (./MIT-Thesis.aux (./acknowledgments.aux) (./body.aux) (./appendixa.aux))
 \openout1 = `MIT-Thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 236.
-LaTeX Font Info:    ... okay on input line 236.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 236.
-LaTeX Font Info:    ... okay on input line 236.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 236.
-LaTeX Font Info:    ... okay on input line 236.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 236.
-LaTeX Font Info:    ... okay on input line 236.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 236.
-LaTeX Font Info:    ... okay on input line 236.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 236.
-LaTeX Font Info:    ... okay on input line 236.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 236.
-LaTeX Font Info:    ... okay on input line 236.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 236.
-LaTeX Font Info:    ... okay on input line 236.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 236.
-LaTeX Font Info:    ... okay on input line 236.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 264.
+LaTeX Font Info:    ... okay on input line 264.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 264.
+LaTeX Font Info:    ... okay on input line 264.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 264.
+LaTeX Font Info:    ... okay on input line 264.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 264.
+LaTeX Font Info:    ... okay on input line 264.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 264.
+LaTeX Font Info:    ... okay on input line 264.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 264.
+LaTeX Font Info:    ... okay on input line 264.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 264.
+LaTeX Font Info:    ... okay on input line 264.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 264.
+LaTeX Font Info:    ... okay on input line 264.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 264.
+LaTeX Font Info:    ... okay on input line 264.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1187,44 +1201,44 @@ LaTeX Font Info:    ... okay on input line 236.
 
 (/usr/local/texlive/2023/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count528
-\scratchdimen=\dimen329
-\scratchbox=\box134
-\nofMPsegments=\count529
-\nofMParguments=\count530
-\everyMPshowfont=\toks46
-\MPscratchCnt=\count531
-\MPscratchDim=\dimen330
-\MPnumerator=\count532
-\makeMPintoPDFobject=\count533
-\everyMPtoPDFconversion=\toks47
+\scratchcounter=\count529
+\scratchdimen=\dimen332
+\scratchbox=\box137
+\nofMPsegments=\count530
+\nofMParguments=\count531
+\everyMPshowfont=\toks47
+\MPscratchCnt=\count532
+\MPscratchDim=\dimen333
+\MPnumerator=\count533
+\makeMPintoPDFobject=\count534
+\everyMPtoPDFconversion=\toks48
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 236.
-\c@lstlisting=\count534
+Package hyperref Info: Link coloring OFF on input line 264.
+\c@lstlisting=\count535
 
 
-Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 236.
+Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 264.
 
 
-Package chemgreek Info: Activating mapping `default' on line 236.
+Package chemgreek Info: Activating mapping `default' on line 264.
 
-LaTeX Info: Redefining \microtypecontext on input line 236.
-Package microtype Info: Applying patch `item' on input line 236.
-Package microtype Info: Applying patch `toc' on input line 236.
-Package microtype Info: Applying patch `eqnum' on input line 236.
-Package microtype Info: Applying patch `verbatim' on input line 236.
+LaTeX Info: Redefining \microtypecontext on input line 264.
+Package microtype Info: Applying patch `item' on input line 264.
+Package microtype Info: Applying patch `toc' on input line 264.
+Package microtype Info: Applying patch `eqnum' on input line 264.
+Package microtype Info: Applying patch `verbatim' on input line 264.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 236.
+LaTeX Info: Redefining \showhyphens on input line 264.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -1253,12 +1267,12 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'MIT-Thesis.bbl' found.
  (./MIT-Thesis.bbl)
-Package biblatex Info: Reference section=0 on input line 236.
-Package biblatex Info: Reference segment=0 on input line 236.
+Package biblatex Info: Reference section=0 on input line 264.
+Package biblatex Info: Reference segment=0 on input line 264.
 <<sRGB.icc>>
-\g__signature_autno_int=\count535
-\g__signature_supno_int=\count536
-\g__signature_accno_int=\count537
+\g__signature_autno_int=\count536
+\g__signature_supno_int=\count537
+\g__signature_accno_int=\count538
  [1
 
 
@@ -1268,132 +1282,22 @@ Package biblatex Info: Reference segment=0 on input line 236.
 
 ] [4
 
-] [8
+]
+\openout2 = `acknowledgments.aux'.
+
+ (./acknowledgments.tex) [5
 
 
-] (./MIT-Thesis.toc)
+] [6
+
+
+
+] (./MIT-Thesis.toc [7])
 \tf@toc=\write7
 \openout7 = `MIT-Thesis.toc'.
 
- [9] [10
-
-] (./MIT-Thesis.lof)
-\tf@lof=\write8
-\openout8 = `MIT-Thesis.lof'.
-
- [11] [12
-
-] (./MIT-Thesis.lot)
-\tf@lot=\write9
-\openout9 = `MIT-Thesis.lot'.
-
- [13]
-\openout2 = `chapter3.aux'.
-
- (./chapter3.tex [18
-
-
-
-
-]
-Chapter 3.
-<code-screenshots/REG.png, id=94, 1061.9675pt x 439.6425pt>
-File: code-screenshots/REG.png Graphic file (type png)
-<use code-screenshots/REG.png>
-Package pdftex.def Info: code-screenshots/REG.png  used on input line 18.
-(pdftex.def)             Requested size: 318.5927pt x 131.89375pt.
-<code-screenshots/MEM.png, id=97, 1061.9675pt x 566.115pt>
-File: code-screenshots/MEM.png Graphic file (type png)
-<use code-screenshots/MEM.png>
-Package pdftex.def Info: code-screenshots/MEM.png  used on input line 22.
-(pdftex.def)             Requested size: 318.5927pt x 169.8358pt.
-[19 <./code-screenshots/REG.png>]
-<code-screenshots/SetRegOld.png, id=105, 1601.985pt x 608.2725pt>
-File: code-screenshots/SetRegOld.png Graphic file (type png)
-<use code-screenshots/SetRegOld.png>
-Package pdftex.def Info: code-screenshots/SetRegOld.png  used on input line 29.
-(pdftex.def)             Requested size: 480.59921pt x 182.48315pt.
-
-Overfull \hbox (10.8442pt too wide) in paragraph at lines 29--29
-[] 
- []
-
-<code-screenshots/SetRegNew.png, id=107, 1618.045pt x 650.43pt>
-File: code-screenshots/SetRegNew.png Graphic file (type png)
-<use code-screenshots/SetRegNew.png>
-Package pdftex.def Info: code-screenshots/SetRegNew.png  used on input line 33.
-(pdftex.def)             Requested size: 485.41725pt x 195.1305pt.
-
-Overfull \hbox (15.66223pt too wide) in paragraph at lines 33--33
-[] 
- []
-
-[20 <./code-screenshots/MEM.png> <./code-screenshots/SetRegOld.png>]
-<code-screenshots/R_SetReg_full.png, id=118, 1620.0525pt x 566.115pt>
-File: code-screenshots/R_SetReg_full.png Graphic file (type png)
-<use code-screenshots/R_SetReg_full.png>
-Package pdftex.def Info: code-screenshots/R_SetReg_full.png  used on input line 37.
-(pdftex.def)             Requested size: 486.0195pt x 169.8358pt.
-
-Overfull \hbox (16.26448pt too wide) in paragraph at lines 37--37
-[] 
- []
-
-<code-screenshots/R_SetReg_partial.png, id=120, 2246.3925pt x 523.9575pt>
-File: code-screenshots/R_SetReg_partial.png Graphic file (type png)
-<use code-screenshots/R_SetReg_partial.png>
-Package pdftex.def Info: code-screenshots/R_SetReg_partial.png  used on input line 39.
-(pdftex.def)             Requested size: 673.92296pt x 157.18846pt.
-
-Overfull \hbox (204.16794pt too wide) in paragraph at lines 39--39
-[] 
- []
-
-) [21 <./code-screenshots/SetRegNew.png> <./code-screenshots/R_SetReg_full.png> <./code-screenshots/R_SetReg_partial.png>]
-\openout2 = `chapter4.aux'.
-
- (./chapter4.tex [22
-
-
-
-
-]
-Chapter 4.
-<code-screenshots/mem_state.png, id=136, 1501.61pt x 271.0125pt>
-File: code-screenshots/mem_state.png Graphic file (type png)
-<use code-screenshots/mem_state.png>
-Package pdftex.def Info: code-screenshots/mem_state.png  used on input line 6.
-(pdftex.def)             Requested size: 450.48648pt x 81.30437pt.
-<code-screenshots/mem_state_symb.png, id=138, 993.7125pt x 271.0125pt>
-File: code-screenshots/mem_state_symb.png Graphic file (type png)
-<use code-screenshots/mem_state_symb.png>
-Package pdftex.def Info: code-screenshots/mem_state_symb.png  used on input line 10.
-(pdftex.def)             Requested size: 298.11604pt x 81.30437pt.
-<code-screenshots/Load64.png, id=140, 959.585pt x 313.17pt>
-File: code-screenshots/Load64.png Graphic file (type png)
-<use code-screenshots/Load64.png>
-Package pdftex.def Info: code-screenshots/Load64.png  used on input line 14.
-(pdftex.def)             Requested size: 287.87772pt x 93.95172pt.
-<code-screenshots/Store64.png, id=142, 1078.0275pt x 313.17pt>
-File: code-screenshots/Store64.png Graphic file (type png)
-<use code-screenshots/Store64.png>
-Package pdftex.def Info: code-screenshots/Store64.png  used on input line 16.
-(pdftex.def)             Requested size: 323.41075pt x 93.95172pt.
-[23 <./code-screenshots/mem_state.png> <./code-screenshots/mem_state_symb.png> <./code-screenshots/Load64.png>]
-<code-screenshots/LoadOld.png, id=154, 1686.3pt x 650.43pt>
-File: code-screenshots/LoadOld.png Graphic file (type png)
-<use code-screenshots/LoadOld.png>
-Package pdftex.def Info: code-screenshots/LoadOld.png  used on input line 20.
-(pdftex.def)             Requested size: 505.8939pt x 195.1305pt.
-
-Overfull \hbox (36.13889pt too wide) in paragraph at lines 20--20
-[] 
- []
-
-\openout4 = `MIT-Thesis.pyg'.
-
-(./_minted-MIT-Thesis/default.pygstyle) (./_minted-MIT-Thesis/1D7E4A6AEFBE8EB37F6D25DAD0821BBBD54396EEF226EA3C5F7E48618E03BDCC.pygtex
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 3.
+ [8] (./MIT-Thesis.lof
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 10.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
@@ -1402,84 +1306,506 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 )
-<code-screenshots/Load_of_idx.png, id=156, 1652.1725pt x 650.43pt>
-File: code-screenshots/Load_of_idx.png Graphic file (type png)
-<use code-screenshots/Load_of_idx.png>
-Package pdftex.def Info: code-screenshots/Load_of_idx.png  used on input line 28.
-(pdftex.def)             Requested size: 495.65558pt x 195.1305pt.
+\tf@lof=\write8
+\openout8 = `MIT-Thesis.lof'.
 
-Overfull \hbox (25.90056pt too wide) in paragraph at lines 28--28
-[] 
- []
+ [9
 
-<code-screenshots/LoadNew.png, id=158, 1585.925pt x 734.745pt>
-File: code-screenshots/LoadNew.png Graphic file (type png)
-<use code-screenshots/LoadNew.png>
-Package pdftex.def Info: code-screenshots/LoadNew.png  used on input line 30.
-(pdftex.def)             Requested size: 475.78117pt x 220.42519pt.
+] [10
 
-Overfull \hbox (6.02615pt too wide) in paragraph at lines 30--30
-[] 
- []
+] (./MIT-Thesis.lot)
+\tf@lot=\write9
+\openout9 = `MIT-Thesis.lot'.
 
-[24 <./code-screenshots/Store64.png> <./code-screenshots/LoadOld.png> <./code-screenshots/Load_of_idx.png>]
-<code-screenshots/LoadN_R.png, id=171, 1585.925pt x 692.5875pt>
-File: code-screenshots/LoadN_R.png Graphic file (type png)
-<use code-screenshots/LoadN_R.png>
-Package pdftex.def Info: code-screenshots/LoadN_R.png  used on input line 36.
-(pdftex.def)             Requested size: 475.78117pt x 207.77785pt.
+ [11]
+\openout2 = `body.aux'.
 
-Overfull \hbox (6.02615pt too wide) in paragraph at lines 36--36
-[] 
- []
-
-<code-screenshots/get_mem_app_split.png, id=173, 1738.495pt x 397.485pt>
-File: code-screenshots/get_mem_app_split.png Graphic file (type png)
-<use code-screenshots/get_mem_app_split.png>
-Package pdftex.def Info: code-screenshots/get_mem_app_split.png  used on input line 40.
-(pdftex.def)             Requested size: 521.55252pt x 119.24641pt.
-
-Overfull \hbox (51.7975pt too wide) in paragraph at lines 40--40
-[] 
- []
-
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 41.
-[25 <./code-screenshots/LoadNew.png> <./code-screenshots/LoadN_R.png>]) [26 <./code-screenshots/get_mem_app_split.png>]
-\openout2 = `chapter5.aux'.
-
- (./chapter5.tex
-Chapter 5.
-<code-screenshots/vector_binop_aux.png, id=193, 1770.615pt x 734.745pt>
-File: code-screenshots/vector_binop_aux.png Graphic file (type png)
-<use code-screenshots/vector_binop_aux.png>
-Package pdftex.def Info: code-screenshots/vector_binop_aux.png  used on input line 11.
-(pdftex.def)             Requested size: 531.18861pt x 220.42519pt.
-
-Overfull \hbox (61.4336pt too wide) in paragraph at lines 11--11
-[] 
- []
-
-[27
-
-
+ (./body.tex [12
 
 
 ]
-<code-screenshots/SymexNormalInstruction.png, id=199, 1872.9975pt x 523.9575pt>
-File: code-screenshots/SymexNormalInstruction.png Graphic file (type png)
-<use code-screenshots/SymexNormalInstruction.png>
-Package pdftex.def Info: code-screenshots/SymexNormalInstruction.png  used on input line 15.
-(pdftex.def)             Requested size: 561.9036pt x 157.18846pt.
+Chapter 1.
+[13] [14
 
-Overfull \hbox (92.14857pt too wide) in paragraph at lines 15--15
+]
+Chapter 2.
+[15]
+Overfull \hbox (3.10796pt too wide) in paragraph at lines 66--67
+\T1/cmtt/m/n/12 vpbroadcastq\T1/cmr/m/n/12 (-20) ), lane-wise arith-metic (\T1/cmtt/m/n/12 vpaddq\T1/cmr/m/n/12 (-20) , \T1/cmtt/m/n/12 vpsubq\T1/cmr/m/n/12 (-20) , \T1/cmtt/m/n/12 vpmuludq\T1/cmr/m/n/12 (-20) ), bit-wise op-er-a-tions (\T1/cmtt/m/n/12 vpandq\T1/cmr/m/n/12 (-20) ,
+ []
+
+[16] [17] [18] [19] [20
+
+]
+Chapter 3.
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 160.
+<code-screenshots/mov_symex.png, id=255, 666.49pt x 291.0875pt>
+File: code-screenshots/mov_symex.png Graphic file (type png)
+<use code-screenshots/mov_symex.png>
+Package pdftex.def Info: code-screenshots/mov_symex.png  used on input line 168.
+(pdftex.def)             Requested size: 199.94853pt x 87.32692pt.
+[21 <./code-screenshots/mov_symex.png (PNG copy)>]
+<code-screenshots/R_SetReg.png, id=264, 1800.7275pt x 421.575pt>
+File: code-screenshots/R_SetReg.png Graphic file (type png)
+<use code-screenshots/R_SetReg.png>
+Package pdftex.def Info: code-screenshots/R_SetReg.png  used on input line 196.
+(pdftex.def)             Requested size: 540.22243pt x 126.47346pt.
+
+Overfull \hbox (70.4674pt too wide) in paragraph at lines 196--196
 [] 
  []
 
-) [28 <./code-screenshots/vector_binop_aux.png> <./code-screenshots/SymexNormalInstruction.png>]
+[22 <./code-screenshots/R_SetReg.png (PNG copy)>]
+Chapter 4.
+<code-screenshots/REG.png, id=272, 1021.8175pt x 377.41pt>
+File: code-screenshots/REG.png Graphic file (type png)
+<use code-screenshots/REG.png>
+Package pdftex.def Info: code-screenshots/REG.png  used on input line 231.
+(pdftex.def)             Requested size: 306.54762pt x 113.22386pt.
+[23
 
-LaTeX Warning: Empty bibliography on input line 391.
+ <./code-screenshots/REG.png (PNG copy)>]
+<code-screenshots/MEM.png, id=279, 1005.7575pt x 509.905pt>
+File: code-screenshots/MEM.png Graphic file (type png)
+<use code-screenshots/MEM.png>
+Package pdftex.def Info: code-screenshots/MEM.png  used on input line 246.
+(pdftex.def)             Requested size: 301.72958pt x 152.97267pt.
+<code-screenshots/SetRegOld.png, id=281, 1953.2975pt x 552.0625pt>
+File: code-screenshots/SetRegOld.png Graphic file (type png)
+<use code-screenshots/SetRegOld.png>
+Package pdftex.def Info: code-screenshots/SetRegOld.png  used on input line 266.
+(pdftex.def)             Requested size: 585.99377pt x 165.62003pt.
 
-(./MIT-Thesis.aux (./acknowledgments.aux) (./chapter1.aux) (./chapter2.aux) (./chapter3.aux) (./chapter4.aux) (./chapter5.aux) (./chapter6.aux) (./chapter7.aux) (./appendixa.aux) (./appendixb.aux))
+Overfull \hbox (116.23875pt too wide) in paragraph at lines 266--266
+[] 
+ []
+
+<code-screenshots/SetRegNew.png, id=283, 1547.7825pt x 509.905pt>
+File: code-screenshots/SetRegNew.png Graphic file (type png)
+<use code-screenshots/SetRegNew.png>
+Package pdftex.def Info: code-screenshots/SetRegNew.png  used on input line 280.
+(pdftex.def)             Requested size: 464.33833pt x 152.97267pt.
+[24 <./code-screenshots/MEM.png (PNG copy)> <./code-screenshots/SetRegOld.png (PNG copy)>]
+<code-screenshots/R_SetReg_full.png, id=291, 1648.1575pt x 552.0625pt>
+File: code-screenshots/R_SetReg_full.png Graphic file (type png)
+<use code-screenshots/R_SetReg_full.png>
+Package pdftex.def Info: code-screenshots/R_SetReg_full.png  used on input line 296.
+(pdftex.def)             Requested size: 494.45107pt x 165.62003pt.
+
+Overfull \hbox (24.69604pt too wide) in paragraph at lines 296--296
+[] 
+ []
+
+<code-screenshots/R_SetReg_partial.png, id=293, 1581.91pt x 509.905pt>
+File: code-screenshots/R_SetReg_partial.png Graphic file (type png)
+<use code-screenshots/R_SetReg_partial.png>
+Package pdftex.def Info: code-screenshots/R_SetReg_partial.png  used on input line 308.
+(pdftex.def)             Requested size: 474.57666pt x 152.97267pt.
+
+Overfull \hbox (4.82164pt too wide) in paragraph at lines 308--308
+[] 
+ []
+
+<code-screenshots/mem_state.png, id=295, 1461.46pt x 246.9225pt>
+File: code-screenshots/mem_state.png Graphic file (type png)
+<use code-screenshots/mem_state.png>
+Package pdftex.def Info: code-screenshots/mem_state.png  used on input line 322.
+(pdftex.def)             Requested size: 438.44139pt x 74.0773pt.
+[25 <./code-screenshots/SetRegNew.png (PNG copy)> <./code-screenshots/R_SetReg_full.png (PNG copy)> <./code-screenshots/R_SetReg_partial.png (PNG copy)>]
+<code-screenshots/mem_state_symb.png, id=306, 955.57pt x 246.9225pt>
+File: code-screenshots/mem_state_symb.png Graphic file (type png)
+<use code-screenshots/mem_state_symb.png>
+Package pdftex.def Info: code-screenshots/mem_state_symb.png  used on input line 332.
+(pdftex.def)             Requested size: 286.67322pt x 74.0773pt.
+<code-screenshots/Load64.png, id=308, 903.375pt x 246.9225pt>
+File: code-screenshots/Load64.png Graphic file (type png)
+<use code-screenshots/Load64.png>
+Package pdftex.def Info: code-screenshots/Load64.png  used on input line 343.
+(pdftex.def)             Requested size: 271.01459pt x 74.0773pt.
+<code-screenshots/Store64.png, id=310, 1226.5825pt x 291.0875pt>
+File: code-screenshots/Store64.png Graphic file (type png)
+<use code-screenshots/Store64.png>
+Package pdftex.def Info: code-screenshots/Store64.png  used on input line 350.
+(pdftex.def)             Requested size: 367.97758pt x 87.32692pt.
+<code-screenshots/Load_old.png, id=312, 2529.45pt x 465.74pt>
+File: code-screenshots/Load_old.png Graphic file (type png)
+<use code-screenshots/Load_old.png>
+Package pdftex.def Info: code-screenshots/Load_old.png  used on input line 363.
+(pdftex.def)             Requested size: 758.84087pt x 139.72307pt.
+
+Overfull \hbox (289.08585pt too wide) in paragraph at lines 363--363
+[] 
+ []
+
+\openout4 = `MIT-Thesis.pyg'.
+
+(./_minted-MIT-Thesis/default.pygstyle) (./_minted-MIT-Thesis/1D7E4A6AEFBE8EB37F6D25DAD0821BBBD54396EEF226EA3C5F7E48618E03BDCC.pygtex) [26 <./code-screenshots/mem_state.png (PNG copy)> <./code-screenshots/mem_state_symb.png (PNG copy)> <./code-screenshots/Load64.png (PNG copy)> <./code-screenshots/Store64.png (PNG copy)> <./code-screenshots/Load_old.png (PNG copy)>]
+<code-screenshots/Load_of_idx.png, id=323, 1597.97pt x 726.715pt>
+File: code-screenshots/Load_of_idx.png Graphic file (type png)
+<use code-screenshots/Load_of_idx.png>
+Package pdftex.def Info: code-screenshots/Load_of_idx.png  used on input line 393.
+(pdftex.def)             Requested size: 479.3947pt x 218.01617pt.
+
+Overfull \hbox (9.63968pt too wide) in paragraph at lines 393--393
+[] 
+ []
+
+<code-screenshots/Load_new.png, id=325, 1513.655pt x 726.715pt>
+File: code-screenshots/Load_new.png Graphic file (type png)
+<use code-screenshots/Load_new.png>
+Package pdftex.def Info: code-screenshots/Load_new.png  used on input line 410.
+(pdftex.def)             Requested size: 454.1pt x 218.01617pt.
+<code-screenshots/LoadN_R.png, id=327, 1529.715pt x 640.3925pt>
+File: code-screenshots/LoadN_R.png Graphic file (type png)
+<use code-screenshots/LoadN_R.png>
+Package pdftex.def Info: code-screenshots/LoadN_R.png  used on input line 431.
+(pdftex.def)             Requested size: 458.91805pt x 192.11923pt.
+[27 <./code-screenshots/Load_of_idx.png (PNG copy)> <./code-screenshots/Load_new.png (PNG copy)>] [28 <./code-screenshots/LoadN_R.png (PNG copy)>]
+Chapter 5.
+<code-screenshots/op.png, id=342, 1716.4125pt x 204.765pt>
+File: code-screenshots/op.png Graphic file (type png)
+<use code-screenshots/op.png>
+Package pdftex.def Info: code-screenshots/op.png  used on input line 460.
+(pdftex.def)             Requested size: 514.92773pt x 61.42996pt.
+
+Overfull \hbox (45.17271pt too wide) in paragraph at lines 460--460
+[] 
+ []
+
+<code-screenshots/SymexNormalInstruction1.png, id=344, 1818.795pt x 465.74pt>
+File: code-screenshots/SymexNormalInstruction1.png Graphic file (type png)
+<use code-screenshots/SymexNormalInstruction1.png>
+Package pdftex.def Info: code-screenshots/SymexNormalInstruction1.png  used on input line 473.
+(pdftex.def)             Requested size: 545.64272pt x 139.72307pt.
+
+Overfull \hbox (75.8877pt too wide) in paragraph at lines 473--473
+[] 
+ []
+
+[29
+
+ <./code-screenshots/op.png (PNG copy)>]
+<dep_graphs/VectorBinop both.png, id=353, 1021.8175pt x 570.13pt>
+File: dep_graphs/VectorBinop both.png Graphic file (type png)
+<use dep_graphs/VectorBinop both.png>
+Package pdftex.def Info: dep_graphs/VectorBinop both.png  used on input line 491.
+(pdftex.def)             Requested size: 510.9075pt x 285.0643pt.
+
+Overfull \hbox (41.15248pt too wide) in paragraph at lines 491--491
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<code-screenshots/vector_binop_aux.png, id=356, 1716.4125pt x 682.55pt>
+File: code-screenshots/vector_binop_aux.png Graphic file (type png)
+<use code-screenshots/vector_binop_aux.png>
+Package pdftex.def Info: code-screenshots/vector_binop_aux.png  used on input line 507.
+(pdftex.def)             Requested size: 514.92773pt x 204.76657pt.
+
+Overfull \hbox (45.17271pt too wide) in paragraph at lines 507--507
+[] 
+ []
+
+[30 <./code-screenshots/SymexNormalInstruction1.png (PNG copy)>]
+<code-screenshots/SymexNormalInstruction2.png, id=363, 1818.795pt x 640.3925pt>
+File: code-screenshots/SymexNormalInstruction2.png Graphic file (type png)
+<use code-screenshots/SymexNormalInstruction2.png>
+Package pdftex.def Info: code-screenshots/SymexNormalInstruction2.png  used on input line 525.
+(pdftex.def)             Requested size: 545.64272pt x 192.11923pt.
+
+Overfull \hbox (75.8877pt too wide) in paragraph at lines 525--525
+[] 
+ []
+
+[31
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.527 T
+       his pattern generalizes beyond binary operations. <./dep_graphs/VectorBinop both.png> <./code-screenshots/vector_binop_aux.png (PNG copy)>]
+<code-screenshots/slice_vadd.png, id=375, 1818.795pt x 465.74pt>
+File: code-screenshots/slice_vadd.png Graphic file (type png)
+<use code-screenshots/slice_vadd.png>
+Package pdftex.def Info: code-screenshots/slice_vadd.png  used on input line 555.
+(pdftex.def)             Requested size: 545.64272pt x 139.72307pt.
+
+Overfull \hbox (75.8877pt too wide) in paragraph at lines 555--555
+[] 
+ []
+
+[32 <./code-screenshots/SymexNormalInstruction2.png (PNG copy)>]
+<code-screenshots/coalescing_slice.png, id=382, 1732.4725pt x 509.905pt>
+File: code-screenshots/coalescing_slice.png Graphic file (type png)
+<use code-screenshots/coalescing_slice.png>
+Package pdftex.def Info: code-screenshots/coalescing_slice.png  used on input line 569.
+(pdftex.def)             Requested size: 519.74577pt x 152.97267pt.
+
+Overfull \hbox (49.99075pt too wide) in paragraph at lines 569--569
+[] 
+ []
+
+<code-screenshots/slice_tower_normalize.png, id=384, 1850.915pt x 1248.665pt>
+File: code-screenshots/slice_tower_normalize.png Graphic file (type png)
+<use code-screenshots/slice_tower_normalize.png>
+Package pdftex.def Info: code-screenshots/slice_tower_normalize.png  used on input line 602.
+(pdftex.def)             Requested size: 555.2788pt x 374.60239pt.
+
+Overfull \hbox (85.52377pt too wide) in paragraph at lines 602--602
+[] 
+ []
+
+[33 <./code-screenshots/slice_vadd.png (PNG copy)> <./code-screenshots/coalescing_slice.png (PNG copy)>]
+<code-screenshots/slice_slice.png, id=392, 1292.83pt x 421.575pt>
+File: code-screenshots/slice_slice.png Graphic file (type png)
+<use code-screenshots/slice_slice.png>
+Package pdftex.def Info: code-screenshots/slice_slice.png  used on input line 627.
+(pdftex.def)             Requested size: 387.85199pt x 126.47346pt.
+ [34 <./code-screenshots/slice_tower_normalize.png (PNG copy)>]
+<code-screenshots/slice_set_slice.png, id=399, 1411.2725pt x 421.575pt>
+File: code-screenshots/slice_set_slice.png Graphic file (type png)
+<use code-screenshots/slice_set_slice.png>
+Package pdftex.def Info: code-screenshots/slice_set_slice.png  used on input line 640.
+(pdftex.def)             Requested size: 423.38503pt x 126.47346pt.
+<code-screenshots/slice_set_slice_disjoint.png, id=401, 1445.4pt x 421.575pt>
+File: code-screenshots/slice_set_slice_disjoint.png Graphic file (type png)
+<use code-screenshots/slice_set_slice_disjoint.png>
+Package pdftex.def Info: code-screenshots/slice_set_slice_disjoint.png  used on input line 653.
+(pdftex.def)             Requested size: 433.62335pt x 126.47346pt.
+<code-screenshots/peel.png, id=403, 1919.17pt x 770.88pt>
+File: code-screenshots/peel.png Graphic file (type png)
+<use code-screenshots/peel.png>
+Package pdftex.def Info: code-screenshots/peel.png  used on input line 671.
+(pdftex.def)             Requested size: 575.75545pt x 231.26578pt.
+
+Overfull \hbox (106.00043pt too wide) in paragraph at lines 671--671
+[] 
+ []
+
+[35 <./code-screenshots/slice_slice.png (PNG copy)> <./code-screenshots/slice_set_slice.png (PNG copy)> <./code-screenshots/slice_set_slice_disjoint.png (PNG copy)>]
+<code-screenshots/batched_addmod.png, id=412, 1345.025pt x 552.0625pt>
+File: code-screenshots/batched_addmod.png Graphic file (type png)
+<use code-screenshots/batched_addmod.png>
+Package pdftex.def Info: code-screenshots/batched_addmod.png  used on input line 701.
+(pdftex.def)             Requested size: 403.5106pt x 165.62003pt.
+ [36 <./code-screenshots/peel.png (PNG copy)>] [37 <./code-screenshots/batched_addmod.png (PNG copy)>] [38
+
+]
+Chapter 6.
+<code-screenshots/vpaddq_symbolic.png, id=431, 1242.6425pt x 246.9225pt>
+File: code-screenshots/vpaddq_symbolic.png Graphic file (type png)
+<use code-screenshots/vpaddq_symbolic.png>
+Package pdftex.def Info: code-screenshots/vpaddq_symbolic.png  used on input line 732.
+(pdftex.def)             Requested size: 372.79562pt x 74.0773pt.
+<code-screenshots/vpaddq_semantic.png, id=433, 1192.455pt x 335.2525pt>
+File: code-screenshots/vpaddq_semantic.png Graphic file (type png)
+<use code-screenshots/vpaddq_semantic.png>
+Package pdftex.def Info: code-screenshots/vpaddq_semantic.png  used on input line 742.
+(pdftex.def)             Requested size: 357.73926pt x 100.57652pt.
+<dep_graphs/SymexVectorBinopR.png, id=439, 1276.77pt x 558.085pt>
+File: dep_graphs/SymexVectorBinopR.png Graphic file (type png)
+<use dep_graphs/SymexVectorBinopR.png>
+Package pdftex.def Info: dep_graphs/SymexVectorBinopR.png  used on input line 748.
+(pdftex.def)             Requested size: 510.69896pt x 223.23004pt.
+
+Overfull \hbox (40.94394pt too wide) in paragraph at lines 748--748
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<code-screenshots/make_lane_R.png, id=441, 1784.6675pt x 943.525pt>
+File: code-screenshots/make_lane_R.png Graphic file (type png)
+<use code-screenshots/make_lane_R.png>
+Package pdftex.def Info: code-screenshots/make_lane_R.png  used on input line 772.
+(pdftex.def)             Requested size: 535.40439pt x 283.05968pt.
+
+Overfull \hbox (65.64937pt too wide) in paragraph at lines 772--772
+[] 
+ []
+
+[39 <./code-screenshots/vpaddq_symbolic.png (PNG copy)> <./code-screenshots/vpaddq_semantic.png (PNG copy)>] [40
+pdfTeX warning (ext4): destination with the same identifier (name{figure.6.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.781 \codeshot{interprets_as_binop}
+                                     <./dep_graphs/SymexVectorBinopR.png> <./code-screenshots/make_lane_R.png (PNG copy)>]
+<code-screenshots/interprets_as_binop.png, id=457, 1395.2125pt x 246.9225pt>
+File: code-screenshots/interprets_as_binop.png Graphic file (type png)
+<use code-screenshots/interprets_as_binop.png>
+Package pdftex.def Info: code-screenshots/interprets_as_binop.png  used on input line 781.
+(pdftex.def)             Requested size: 418.56697pt x 74.0773pt.
+<code-screenshots/interprets_ex.png, id=459, 1766.6pt x 509.905pt>
+File: code-screenshots/interprets_ex.png Graphic file (type png)
+<use code-screenshots/interprets_ex.png>
+Package pdftex.def Info: code-screenshots/interprets_ex.png  used on input line 795.
+(pdftex.def)             Requested size: 529.9841pt x 152.97267pt.
+
+Overfull \hbox (60.22908pt too wide) in paragraph at lines 795--795
+[] 
+ []
+
+<code-screenshots/binops_proof.png, id=461, 1648.1575pt x 246.9225pt>
+File: code-screenshots/binops_proof.png Graphic file (type png)
+<use code-screenshots/binops_proof.png>
+Package pdftex.def Info: code-screenshots/binops_proof.png  used on input line 803.
+(pdftex.def)             Requested size: 494.45107pt x 74.0773pt.
+
+Overfull \hbox (24.69604pt too wide) in paragraph at lines 803--803
+[] 
+ []
+
+[41 <./code-screenshots/interprets_as_binop.png (PNG copy)> <./code-screenshots/interprets_ex.png (PNG copy)> <./code-screenshots/binops_proof.png (PNG copy)>]
+<code-screenshots/blend.png, id=471, 1816.7875pt x 682.55pt>
+File: code-screenshots/blend.png Graphic file (type png)
+<use code-screenshots/blend.png>
+Package pdftex.def Info: code-screenshots/blend.png  used on input line 831.
+(pdftex.def)             Requested size: 545.04047pt x 204.76657pt.
+
+Overfull \hbox (75.28545pt too wide) in paragraph at lines 831--831
+[] 
+ []
+
+<code-screenshots/blend_aux_R.png, id=473, 1716.4125pt x 901.3675pt>
+File: code-screenshots/blend_aux_R.png Graphic file (type png)
+<use code-screenshots/blend_aux_R.png>
+Package pdftex.def Info: code-screenshots/blend_aux_R.png  used on input line 854.
+(pdftex.def)             Requested size: 514.92773pt x 270.41232pt.
+
+Overfull \hbox (45.17271pt too wide) in paragraph at lines 854--854
+[] 
+ []
+
+<code-screenshots/vpblendd_proof.png, id=475, 1361.085pt x 246.9225pt>
+File: code-screenshots/vpblendd_proof.png Graphic file (type png)
+<use code-screenshots/vpblendd_proof.png>
+Package pdftex.def Info: code-screenshots/vpblendd_proof.png  used on input line 862.
+(pdftex.def)             Requested size: 408.32866pt x 74.0773pt.
+[42 <./code-screenshots/blend.png (PNG copy)> <./code-screenshots/blend_aux_R.png (PNG copy)>]
+<code-screenshots/vpextrq_symex.png, id=483, 1192.455pt x 421.575pt>
+File: code-screenshots/vpextrq_symex.png Graphic file (type png)
+<use code-screenshots/vpextrq_symex.png>
+Package pdftex.def Info: code-screenshots/vpextrq_symex.png  used on input line 878.
+(pdftex.def)             Requested size: 357.73926pt x 126.47346pt.
+<code-screenshots/outlier_proof.png, id=485, 1242.6425pt x 335.2525pt>
+File: code-screenshots/outlier_proof.png Graphic file (type png)
+<use code-screenshots/outlier_proof.png>
+Package pdftex.def Info: code-screenshots/outlier_proof.png  used on input line 888.
+(pdftex.def)             Requested size: 372.79562pt x 100.57652pt.
+ [43 <./code-screenshots/vpblendd_proof.png (PNG copy)> <./code-screenshots/vpextrq_symex.png (PNG copy)> <./code-screenshots/outlier_proof.png (PNG copy)>]
+<code-screenshots/solvesubsumed.png, id=495, 1411.2725pt x 509.905pt>
+File: code-screenshots/solvesubsumed.png Graphic file (type png)
+<use code-screenshots/solvesubsumed.png>
+Package pdftex.def Info: code-screenshots/solvesubsumed.png  used on input line 927.
+(pdftex.def)             Requested size: 423.38503pt x 152.97267pt.
+ [44 <./code-screenshots/solvesubsumed.png (PNG copy)>]
+Chapter 7.
+<code-screenshots/simple-add.png, id=509, 1292.83pt x 1031.855pt>
+File: code-screenshots/simple-add.png Graphic file (type png)
+<use code-screenshots/simple-add.png>
+Package pdftex.def Info: code-screenshots/simple-add.png  used on input line 991.
+(pdftex.def)             Requested size: 387.85199pt x 309.55888pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<code-screenshots/batch-add.png, id=511, 921.4425pt x 1292.83pt>
+File: code-screenshots/batch-add.png Graphic file (type png)
+<use code-screenshots/batch-add.png>
+Package pdftex.def Info: code-screenshots/batch-add.png  used on input line 1022.
+(pdftex.def)             Requested size: 276.43488pt x 387.85199pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[45
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{table.7.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1029 \chapter
+               {Discussion and Future Work}] [46
+pdfTeX warning (ext4): destination with the same identifier (name{figure.7.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1029 \chapter
+               {Discussion and Future Work} <./code-screenshots/simple-add.png (PNG copy)>] [47
+pdfTeX warning (ext4): destination with the same identifier (name{figure.7.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1029 \chapter
+               {Discussion and Future Work} <./code-screenshots/batch-add.png (PNG copy)>] [48
+
+]
+Chapter 8.
+[49]) [50]
+\openout2 = `appendixa.aux'.
+
+ (./appendixa.tex
+Appendix A.
+<dep_graphs/GetOperand.png, id=550, 1023.825pt x 669.50125pt>
+File: dep_graphs/GetOperand.png Graphic file (type png)
+<use dep_graphs/GetOperand.png>
+Package pdftex.def Info: dep_graphs/GetOperand.png  used on input line 4.
+(pdftex.def)             Requested size: 511.91124pt x 334.7498pt.
+
+Overfull \hbox (42.15622pt too wide) in paragraph at lines 4--4
+ [][] 
+ []
+
+<dep_graphs/SetOperand.png, id=552, 1118.1775pt x 612.2875pt>
+File: dep_graphs/SetOperand.png Graphic file (type png)
+<use dep_graphs/SetOperand.png>
+Package pdftex.def Info: dep_graphs/SetOperand.png  used on input line 6.
+(pdftex.def)             Requested size: 503.17523pt x 275.52682pt.
+
+Overfull \hbox (33.42021pt too wide) in paragraph at lines 6--6
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<dep_graphs/GetOperand_R.png, id=554, 1145.27875pt x 595.22375pt>
+File: dep_graphs/GetOperand_R.png Graphic file (type png)
+<use dep_graphs/GetOperand_R.png>
+Package pdftex.def Info: dep_graphs/GetOperand_R.png  used on input line 8.
+(pdftex.def)             Requested size: 515.37068pt x 267.84822pt.
+
+Overfull \hbox (45.61566pt too wide) in paragraph at lines 8--8
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+) [51
+
+
+
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{figure.A.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.402 \include{appendixa}
+                          <./dep_graphs/GetOperand.png>] [52
+pdfTeX warning (ext4): destination with the same identifier (name{figure.A.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.402 \include{appendixa}
+                          <./dep_graphs/SetOperand.png>] [53
+pdfTeX warning (ext4): destination with the same identifier (name{figure.A.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.402 \include{appendixa}
+                          <./dep_graphs/GetOperand_R.png>] [54
+
+
+
+] [55] (./MIT-Thesis.aux (./acknowledgments.aux) (./body.aux) (./appendixa.aux))
 runsystem(rm MIT-Thesis.pyg)...executed.
 
 Package logreq Info: Writing requests to 'MIT-Thesis.run.xml'.
@@ -1487,33 +1813,18 @@ Package logreq Info: Writing requests to 'MIT-Thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 42517 strings out of 476025
- 848859 string characters out of 5790017
- 1858388 words of memory out of 5000000
- 62104 multiletter control sequences out of 15000+600000
- 530033 words of font info for 118 fonts, out of 8000000 for 9000
+ 43199 strings out of 476025
+ 861901 string characters out of 5790017
+ 1863388 words of memory out of 5000000
+ 62551 multiletter control sequences out of 15000+600000
+ 541005 words of font info for 193 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 99i,9n,94p,1061b,1974s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{appendix.B} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{appendix.A} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{chapter.6} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{chapter.2} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{chapter.1} has been referenced but does not exist, replaced by a fixed one
-
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on MIT-Thesis.pdf (21 pages, 1023147 bytes).
+ 99i,9n,94p,1061b,2013s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
+Output written on MIT-Thesis.pdf (55 pages, 4399255 bytes).
 PDF statistics:
- 298 PDF objects out of 1000 (max. 8388607)
- 199 compressed objects within 2 object streams
- 42 named destinations out of 1000 (max. 500000)
- 35624 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 826 PDF objects out of 1000 (max. 8388607)
+ 620 compressed objects within 7 object streams
+ 143 named destinations out of 1000 (max. 500000)
+ 58706 words of extra memory for PDF output out of 61914 (max. 10000000)
 
