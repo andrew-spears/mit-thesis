@@ -2,6 +2,7 @@
 .DS_Store
 
 thesis_annotated.pdf
+.claude
 
 # Node
 node_modules/
@@ -23,3 +24,15 @@ node_modules/
 *.upa
 *.upb
 _minted-*/
+
+# minted-samples scratch files (local-only)
+src/minted-samples.*
+
+# Python (local-only tooling)
+src/coqstyle.py
+src/setup.py
+src/coqstyle.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/

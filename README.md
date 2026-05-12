@@ -13,7 +13,13 @@ latexmk -lualatex MIT-Thesis.tex
 
 Built output: [src/MIT-Thesis.pdf](src/MIT-Thesis.pdf).
 
-Run `node scripts/codeshot.mjs` to generate code screenshots from "#CODESHOT'-delimited comments.
+Run
+
+```sh
+node scripts/codeshot.mjs
+```
+
+to generate code screenshots from "#CODESHOT'-delimited comments.
 
 ## Layout
 
