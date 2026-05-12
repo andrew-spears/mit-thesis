@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+thesis_annotated.pdf
+
+# Node
+node_modules/
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.upa
+*.upb
+_minted-*/

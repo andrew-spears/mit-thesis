@@ -1,10 +1,10 @@
 \chapter{Dependency Graphs}
 \label{app:dep-graphs}
 
-\depgraph[.55]{GetOperand}{Dependency graph of \texttt{GetOperand}, which resolves a source operand to a DAG index by dispatching on operand type (register, memory, immediate).}
+\depgraph[.55]{GetOperand}{Dependency graph of \texttt{GetOperand}, which resolves a source operand to a DAG index by dispatching on operand type (register, memory, immediate).}[Tree-shaped dependency graph rooted at GetOperand, branching into helper functions for register, memory, and immediate operand cases, with leaf nodes for primitive DAG operations.]
 
-\depgraph[.55]{SetOperand}{Dependency graph of \texttt{SetOperand}, which writes a DAG index to a destination operand, handling register aliasing and memory stores.}
+\depgraph[.55]{SetOperand}{Dependency graph of \texttt{SetOperand}, which writes a DAG index to a destination operand, handling register aliasing and memory stores.}[Tree-shaped dependency graph rooted at SetOperand, branching into register-aliasing logic and memory-store helpers, terminating in primitive symbolic state updates.]
 
-\depgraph[.6]{GetOperand_R}{Dependency graph of \texttt{GetOperand\_R}, the correspondence lemma relating symbolic \texttt{GetOperand} to concrete operand evaluation.}
+\depgraph[.6]{GetOperand_R}{Dependency graph of \texttt{GetOperand\_R}, the correspondence lemma relating symbolic \texttt{GetOperand} to concrete operand evaluation.}[Dependency graph rooted at the GetOperand_R correspondence lemma, with branches showing the symbolic and concrete sides being related, each decomposing into per-operand-type sub-lemmas.]
 
-\depgraph[.4]{R_SetOperand}{Dependency graph of \texttt{R\_SetOperand}, the correspondence lemma relating symbolic \texttt{SetOperand} to concrete writing of registers or memory addresses.}
+\depgraph[.4]{R_SetOperand}{Dependency graph of \texttt{R\_SetOperand}, the correspondence lemma relating symbolic \texttt{SetOperand} to concrete writing of registers or memory addresses.}[Dependency graph rooted at the R_SetOperand correspondence lemma, branching into the symbolic and concrete sides of SetOperand and decomposing into per-destination-type sub-lemmas for register and memory cases.]

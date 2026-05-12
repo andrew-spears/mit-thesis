@@ -5,10 +5,10 @@
 
 Cryptographic software depends on a small set of arithmetic primitives that are invoked thousands of times in basic protocols. These operations are mathematically simple (finite-field addition, multiplication, and reduction), but their implementations are performance-critical. For this reason, they are often hand-optimized in assembly to exploit machine-specific features, a process that is both error-prone and difficult to verify. 
 
-Fiat Cryptography\autocite{fiatcrypto2019} and CryptOpt \autocite{cryptopt2023} are recent projects that attempt to solve this problem by synthesizing low-level programs and guaranteeing correctness through formal verification. 
+Fiat Cryptography~\autocite{fiatcrypto2019} and CryptOpt~\autocite{cryptopt2023} are recent projects that attempt to solve this problem by synthesizing low-level programs and guaranteeing correctness through formal verification. 
 The resulting code outperforms standard compilers, and certain synthesized primitives are used in production by all major web browsers and many TLS implementations.
 
-However, both Fiat Cryptography and CryptOpt are currently limited to scalar x86-64 instructions. Vectorized instructions perform operations in parallel and are increasingly relied-upon in the most-performant implementations, but these synthesis pipelines are incompatible with vectorized instruction sets, putting a hard ceiling on their performance capabilities.
+However, both Fiat Cryptography and CryptOpt are currently limited to scalar x86-64 instructions. Vectorized instructions perform operations in parallel and are increasingly relied upon in the highest-performance implementations, but these synthesis pipelines are incompatible with vectorized instruction sets, putting a hard ceiling on their performance capabilities.
 
 Fiat Cryptography includes an equivalence checker that verifies assembly programs against high-level specifications.
 This thesis extends the equivalence checker to support AVX2 vector instructions.
@@ -32,9 +32,9 @@ Elliptic-curve cryptography works with finite fields, generally integers modulo 
 The field elements involved are typically on the order of hundreds of bits, far too large to fit in a single machine word.
 Instead, they are represented using arrays of 64-bit integers called \emph{limbs}.
 
-One commonly used field is integers modulo $2^{255}-19$, whose largest element occupies 255 bits. 
-255 bits could mathematically fit in 4 64-bit limbs, but in practice, representation schemes typically use 5 or more limbs.
-For example, the \emph{unsaturated Solinas}\autocite{fiatcrypto2019} representation uses 5 64-bit limbs with headroom in each limb so that many operations can be applied independently to each limb before carrying between them. 
+One commonly used field is integers modulo $2^{255}-19$, whose largest element occupies 255 bits.
+These 255 bits could mathematically fit in 4 64-bit limbs, but in practice, representation schemes typically use 5 or more limbs.
+For example, the \emph{unsaturated Solinas}~\autocite{fiatcrypto2019} representation uses 5 64-bit limbs with headroom in each limb so that many operations can be applied independently to each limb before carrying between them. 
 
 These engineering choices have two important consequences: 
 \begin{itemize}
@@ -67,7 +67,7 @@ The AVX2 instructions used in this work include data movement (\texttt{vmovdqu},
 
 \section{Rocq Theorem Prover}
 
-Most software is checked for correctness by testing on known input-output pairs. Formal verification instead establishes correctness though machine-checked mathematical proofs that software matches a precise logical specification. 
+Most software is checked for correctness by testing on known input-output pairs. Formal verification instead establishes correctness through machine-checked mathematical proofs that software matches a precise logical specification. 
 
 Fiat Cryptography and our additions are implemented in Rocq (formerly Coq), an interactive proof assistant enabling functional code along with compile-time-verified proofs of logical propositions about runtime values.
 
@@ -75,11 +75,11 @@ Throughout this thesis we show Rocq code snippets: \texttt{Definition} and \text
 
 \section{Fiat Cryptography}
 \label{sec:fiat-crypto}
-Fiat Cryptography \autocite{fiatcrypto2019} is a verified compiler that synthesizes correct-by-construction implementations of finite-field arithmetic.
+Fiat Cryptography~\autocite{fiatcrypto2019} is a verified compiler that synthesizes correct-by-construction implementations of finite-field arithmetic.
 At a high level, its synthesis pipeline works as follows:
 \begin{enumerate}
     \item A mathematical specification of each field operation (e.g., modular addition) is defined by hand as a Rocq function.
-    \item The specification is \textit{reified} --- converted from a Rocq function into an explicit syntax tree in PHOAS (Parametric Higher-Order Abstract Syntax)\autocite{phoas2008} that can be inspected and transformed programmatically.
+    \item The specification is \textit{reified} --- converted from a Rocq function into an explicit syntax tree in PHOAS (Parametric Higher-Order Abstract Syntax)~\autocite{phoas2008} that can be inspected and transformed programmatically.
     \item The PHOAS expression is passed through \texttt{BoundsPipeline}, which performs partial evaluation, bounds analysis, and arithmetic optimizations, producing an optimized PHOAS expression.
     \item The optimized expression is stringified into a C program (or a program in another target language).
 \end{enumerate}
@@ -88,7 +88,7 @@ Each stage is accompanied by a machine-checked proof that it preserves the seman
 
 \section{CryptOpt}
 \label{sec:cryptopt}
-CryptOpt \autocite{cryptopt2023} extends the approach of a formally-verified synthesis pipeline with two significant features: a stochastic optimizer and an equivalence checker.
+CryptOpt~\autocite{cryptopt2023} extends the approach of a formally verified synthesis pipeline with two significant features: a stochastic optimizer and an equivalence checker.
 
 % stochastic optimizer
 Starting from the optimized PHOAS expression, CryptOpt generates an initial assembly implementation, then repeatedly mutates it by reordering instructions, substituting equivalent instruction templates, and reallocating registers. Mutations that improve execution time on the target CPU are kept, while those that decrease performance are discarded. The result is a highly performant but not certifiably correct program.
@@ -126,9 +126,9 @@ Several projects address verified cryptographic implementations at different lev
 
 \textbf{Jasmin}~\autocite{jasmin2017} is a language and compiler for high-assurance cryptography, verified in Rocq.
 Programmers write in a C-like language with assembly-level control over instruction selection and register allocation, and the compiler produces x86-64 assembly with formally verified passes.
-Unlike our work, Jasmin verifies its own compiler's output rather than externally produced assembly and it currently targets only scalar x86-64 instructions.
+Unlike our work, Jasmin verifies its own compiler's output rather than externally produced assembly, and it currently targets only scalar x86-64 instructions.
 
-\textbf{HACL*} is a verified cryptography library written in F*. It provides pure C implementations of cryptographic primitives that are formally verified for memory safety, functional correctness, and secret independence. The resulting code is portable but not optimized for platform-specific assembly.
+\textbf{HACL*}~\autocite{hacl2017} is a verified cryptography library written in F*. It provides pure C implementations of cryptographic primitives that are formally verified for memory safety, functional correctness, and secret independence. The resulting code is portable but not optimized for platform-specific assembly.
 
 \textbf{Vale and EverCrypt.}
 Vale~\autocite{vale2017} is a tool for writing and verifying assembly code in F*.
@@ -167,7 +167,7 @@ equivalence checker performs the following steps:
 
 This design means two expressions are proven equal exactly when they resolve to the same DAG index, without needing the added complexity of SAT solving or union-find.
 
-In Rocq, these stateful operations are threaded through a symbolic state monad \texttt{M}, where the bind operator \bind{} sequences steps that read or update the state.
+In Rocq, these stateful operations are threaded through a symbolic state monad \texttt{M}, where the bind notation \bind{} sequences steps that read or update the state.
 For example, the symbolic execution of \texttt{mov dst, src} is:
 
 % #CODESHOT mov_symex
@@ -259,7 +259,7 @@ For example, a memory location needs to accept only scalar registers for the bas
 \section{Register Read/Writes}
 \label{sec:reg-rw}
 
-Many existing functions for interacting with register values in Fiat-Crypto were specialized to handling 64-bit values.
+Many existing functions for interacting with register values in Fiat Cryptography were specialized to handling 64-bit values.
 For example, the SetReg function uses two branches for 64-bit writes and smaller register writes because an 8- or 32-bit write needs to combine the new value with the existing value, whereas a 64-bit write can overwrite the old value, meaning the old value can be completely forgotten (or be unspecified to begin with), simplifying the computation graph in many cases.
 
 % #CODESHOT SetRegOld
@@ -328,7 +328,7 @@ In this case, we introduced two new lemmas:
 \label{sec:mem-model}
 
 Like registers, memory operations were originally built around 64-bit values.
-Memory in Fiat-Crypto is represented in two ways.
+Memory in Fiat Cryptography is represented in two ways.
 In semantics, memory state is a mapping from 64-bit addresses to bytes:
 
 % #CODESHOT mem_state
@@ -348,7 +348,7 @@ This representation only needs to store values in the abstract to keep track of 
 \codeshot{mem_state_symb}
 
 \noindent where both keys and values are implicitly 64-bits.
-This consistency is important because there is no overflow from one memory write to the next address -- writing to address \texttt{a} cannot influence address \texttt{a+8} in this model, so the values need to be a consistent size.
+This consistency is important because there is no overflow from one memory write to the next address --- writing to address \texttt{a} cannot influence address \texttt{a+8} in this model, so the values need to be a consistent size.
 One could have used bytes like the semantic memory model, but symbolic execution is far simpler when everything uses 64 bits, the most common size.
 Thus, two operations exist for this purpose:
 
@@ -469,7 +469,7 @@ After running into scalability problems with the rewrite rules required to make 
 \label{sec:atomic-op}
 
 This approach keeps symbolic execution simple by emitting a single atomic \texttt{op} for each vector instruction and abstracting details away.
-We need to define these new atomic operations, for example \texttt{vadd} and \texttt{vsubb}:
+We need to define these new atomic operations, for example \texttt{vadd} and \texttt{vsub}:
 
 % #CODESHOT op
 % Variant op := ... | vadd (lane_width num_lanes : N) | vsub (lane_width num_lanes : N).
@@ -505,7 +505,7 @@ For example, the \texttt{vpaddq} instruction can be expressed as a composition o
 This pattern can be captured by a few helper functions and conveniently applies identically on the semantics side, both diagrammed in \autoref{fig:VectorBinop both}.
 Helper functions handle slicing lanes, while the \texttt{vector_binop_aux} applies a binary operation to each lane and recursively builds up the result value.
 
-\depgraph[.5]{VectorBinop both}{Dependency graph of functions in Symbolic.v and Semantics.v to implement vector symbolic execution and semantics. }
+\depgraph[.5]{VectorBinop both}{Dependency graph of functions in Symbolic.v and Semantics.v to implement vector symbolic execution and semantics. }[Two parallel dependency trees side by side, one for Symbolic.v and one for Semantics.v, each rooted at a top-level vector-binop function and decomposing through matching layers of slice, lane-operation, and recompose helpers, illustrating the structural correspondence between the symbolic and concrete implementations.]
 
 % #CODESHOT vector_binop_aux
 % Fixpoint vector_binop_aux {opts : symbolic_options_computed_opt} {descr : description}
@@ -585,7 +585,7 @@ Notice the use of the \texttt{coalescing_slice} helper function:
 % #END
 \codeshot{coalescing_slice}
 
-\noindent to handle nested slices coming out of the \texttt{slice_vadd} rule.
+\noindent which is needed to handle nested slices coming out of the \texttt{slice_vadd} rule.
 
 In fact, we ended up adding this rule as well based on empirical testing:
 
@@ -763,7 +763,7 @@ The form of these two implementations already exemplifies why the abstractions i
 
 Because these two functions decompose with the same recursive structure, we can simply prove correspondence between horizontal layers in \autoref{fig:VectorBinop both}, as diagrammed in \autoref{fig:SymexVectorBinopR}\footnote{Generated from source files using a custom-built VSCode extension.}.
 
-\depgraph[.48]{SymexVectorBinopR}{Dependency graph of correspondence lemmas relating the symbolic and concrete semantics of lane-wise binary vector operations. Each lemma relates one layer of abstraction from each side.}
+\depgraph[.48]{SymexVectorBinopR}{Dependency graph of correspondence lemmas relating the symbolic and concrete semantics of lane-wise binary vector operations. Each lemma relates one layer of abstraction from each side.}[A ladder-shaped diagram with two vertical columns representing the symbolic and concrete sides of vector binary operations. Horizontal rungs are correspondence lemmas, each connecting matching abstraction layers between the two columns from top-level vector operation down through lane slicing and primitive arithmetic.]
   
 As one illustrative example, \texttt{make_lane_R} relates the two \texttt{make_lane} implementations:
 
@@ -1012,7 +1012,7 @@ Two representative programs are shown in \autoref{fig:simple-add} and \autoref{f
 %     vmovq   [rdi + 32], xmm0
 %     ret
 % #END
-\codeshotfig{simple-add}{XMM vectorized field addition for Curve25519. Adds five 64-bit limbs using 128-bit \texttt{vpaddq} instructions, processing two limbs per iteration with a single-limb tail.}
+\codeshotfig{simple-add}{XMM vectorized field addition for Curve25519. Adds five 64-bit limbs using 128-bit \texttt{vpaddq} instructions, processing two limbs per iteration with a single-limb tail.}[15pt][15pt][x86-64 assembly listing showing the fiat_25519_add routine: two pairs of vmovdqu loads into 128-bit xmm registers followed by vpaddq additions and vmovdqu stores, then a final scalar load-add-store for the fifth limb, ending with ret.]
 
 
 % #CODESHOT batch-add lang=asm
@@ -1043,12 +1043,12 @@ Two representative programs are shown in \autoref{fig:simple-add} and \autoref{f
 %     vzeroupper
 %     ret
 % #END
-\codeshotfig{batch-add}{Batched YMM field addition for Curve25519. Each 256-bit \texttt{vpaddq} adds the same limb position across four independent field elements stored in structure-of-arrays layout.}
+\codeshotfig{batch-add}{Batched YMM field addition for Curve25519. Each 256-bit \texttt{vpaddq} adds the same limb position across four independent field elements stored in structure-of-arrays layout.}[15pt][15pt][x86-64 assembly listing showing the fiat_25519_batch_add routine: five groups of three instructions (vmovdqu load, vpaddq add, vmovdqu store) on 256-bit ymm registers ymm0 through ymm4, one group per limb position, followed by vzeroupper and ret.]
 
 \section{Runtime Performance}
 \label{sec:runtime-perf}
 
-While correctness is the primary goal of this work, we also evaluate performance of our handwritten arithmetic primitives to demonstrate the performance gain from even simple vector optimizations.
+While correctness is the primary goal of this work, we also evaluate the performance of our handwritten arithmetic primitives to demonstrate the performance gain from even simple vector optimizations.
 For each vectorized assembly program in \autoref{tab:results}, we benchmark
 against a scalar baseline performing the same batched operation using four
 sequential calls to the corresponding function synthesized by Fiat Cryptography.
@@ -1089,7 +1089,7 @@ batch-avx-carry-opp         & $43.06 \pm 0.42$           & $29.62 \pm 0.14$     
 The results group into three regimes.
 Batched operations on contiguous data show speedups between $2.2\times$ and $5.5\times$ over the scalar baseline, roughly the theoretical ceiling.
 
-Limb-parallel vector operations get no meaningful speedup. Field elements have five 64-bit limbs, but XMM and YMM registers store two and four limbs respectively, so the vectorized program still handles a tail in scalar instructions and pays overhead at the boundary. Limb-parallel optimizaiton might be more effective in representations with different limb counts.
+Limb-parallel vector operations get no meaningful speedup. Field elements have five 64-bit limbs, but XMM and YMM registers store two and four limbs respectively, so the vectorized program still handles a tail in scalar instructions and pays overhead at the boundary. Limb-parallel optimization might be more effective in representations with different limb counts.
 
 Batched carry operations are slower than scalar in two cases and only modestly faster in the others. This is because batching carry propagation across elements requires transforming the data layout, which incurs a fixed overhead. This fixed cost dominates for short programs like these, but would be less significant for longer chains of batched operations.
 

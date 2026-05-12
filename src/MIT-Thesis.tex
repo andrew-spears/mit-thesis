@@ -16,7 +16,7 @@
 \DocumentMetadata
 {
 	lang		= en-US, % default language
-	pdfversion  = 1.7,
+	pdfversion  = 1.4,
 	pdfstandard = a-1b,
 %	pdfversion  = 2.0,   % default version
 %	pdfstandard = { ua-2, a-4f }, % requires pdfversion  = 2.0; requires TeX Live 2024 or later.
@@ -198,7 +198,7 @@
 % The following items should be adjusted to match your work. <================= !!!!!!!!!!
 
 \hypersetup{%
-	pdfsubject={Formal verification of vector assembly in Fiat Cryptography},
+	pdfsubject={Formal verification of vectorized assembly for cryptography},
 	% Change this to briefly state topic of your thesis 
 % 
 	pdfkeywords={Andrew M. Spears, MIT, Massachusetts Institute of Technology},
@@ -236,22 +236,22 @@
 %   for usage of includeonly, see https://latexref.xyz/_005cinclude-_0026-_005cincludeonly.html
 
 \NewDocumentCommand{\codeshot}{m O{15pt} O{15pt}}{%
-  \par\vspace*{#2}\includegraphics*[scale=0.2]{code-screenshots/#1.png}\vspace{#3}\par
+  \par\vspace*{#2}\includegraphics*[scale=0.2,alt={Rocq code snippet: #1}]{code-screenshots/#1.png}\vspace{#3}\par
 }
 
-\NewDocumentCommand{\codeshotfig}{m m O{15pt} O{15pt}}{%
+\NewDocumentCommand{\codeshotfig}{m m O{15pt} O{15pt} O{}}{%
   \begin{figure}[h]
-  \vspace*{#3}\noindent\includegraphics*[scale=0.2]{code-screenshots/#1.png}\vspace{#4}
+  \vspace*{#3}\noindent\includegraphics*[scale=0.2,alt={\ifx\relax#5\relax Rocq code snippet: #1\else #5\fi}]{code-screenshots/#1.png}\vspace{#4}
   \caption{#2}
   \label{fig:#1}
   \end{figure}
 }
 
-\newcommand{\depgraph}[3][0.5]{%
+\NewDocumentCommand{\depgraph}{O{0.5} m m O{}}{%
   \begin{figure}[h]
     \centering
     \begin{adjustbox}{center,margin*=-1in 0pt -1in 0pt}
-      \includegraphics*[scale=#1]{dep_graphs/#2.png}
+      \includegraphics*[scale=#1,alt={\ifx\relax#4\relax Dependency graph: #2\else #4\fi}]{dep_graphs/#2.png}
     \end{adjustbox}
     \caption{#3}
     \label{fig:#2}
@@ -272,7 +272,7 @@
 % \Author{Author full name}{Author department}[Author's first PREVIOUS degree][Author's second PREVIOUS degree][...
 % Note that third, fourth, fifth, and sixth arguments are optional [] and may be omitted
 %
- \Author{Andrew M. Spears}{Department of Electrical Engineering and Computer Science}
+ \Author{Andrew M. Spears}{Department of Electrical Engineering and Computer Science}[S.B. Computer Science and Engineering and Mathematics, Massachusetts Institute of Technology, 2025]
 % \Author{Luisa Hernández}{Department of Research}[B.S. Mechanical Engineering, UCLA, 2018][M.S. Stellar Interiors, Vulcan Science Academy, 2020]
 % \Author{Thurston Howell III}{Department of Economics}[MBA, Ferengi School of Management, 2022]
 %
@@ -299,7 +299,7 @@
 % Professor who formally accepts theses for your department (e.g., the Graduate Officer, Professor Sméagol,...)
 % If more than one department gives the degree, use once for each department
 %
-\Acceptor{Leslie A. Kolodziejski}{Professor of Electrical Engineering and Computer Science}{Chair, Department Committee on Graduate Students}
+\Acceptor{Katrina LaCurts}{Chair, Master of Engineering Thesis Committee}{}
 % \Acceptor{Quarta Castor}{Professor of Lodge Building}{Graduate Officer, Department of Mechanical Engineering}
 %%%  If you need to reduce vertical space, put the acceptor title in the second argument and leave the third blank, {}.
 % \Acceptor{Primus Castor}{Professor and Undergraduate Officer, Department of Physics}{}

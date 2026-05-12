@@ -26,9 +26,5 @@ Run `node scripts/codeshot.mjs` to generate code screenshots from "#CODESHOT'-de
 
 ## TODO
 
-- fix code snippets
-- final read of results section
-- license?
-- biography
-- double check adams edits
+- a better solution for code snippets?
 - double check formatting and specs
