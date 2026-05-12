@@ -23,3 +23,12 @@ Run `node scripts/codeshot.mjs` to generate code screenshots from "#CODESHOT'-de
 - [src/references.bib](src/references.bib) — bibliography
 - [src/mitthesis.cls](src/mitthesis.cls) — MIT thesis class (J. H. Lienhard, [github.com/jhlienhard/mitthesis](https://github.com/jhlienhard/mitthesis))
 - [scripts/](scripts/) — code-screenshot rendering helpers (Shiki + Puppeteer)
+
+## TODO
+
+- fix code snippets
+- final read of results section
+- license?
+- biography
+- double check adams edits
+- double check formatting and specs

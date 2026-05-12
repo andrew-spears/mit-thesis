@@ -17,7 +17,7 @@
 {
 	lang		= en-US, % default language
 	pdfversion  = 1.7,
-	pdfstandard = a-2b,
+	pdfstandard = a-1b,
 %	pdfversion  = 2.0,   % default version
 %	pdfstandard = { ua-2, a-4f }, % requires pdfversion  = 2.0; requires TeX Live 2024 or later.
 %	tagging		= on, % For tagging (accessible PDF), run lualatex with TeX Live 2025 or later.
@@ -27,7 +27,7 @@
 
 %%%%%%%%%  Documentclass and options  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[twoside]{mitthesis}
+\documentclass{mitthesis}
 % 						fontset=libertinus, fontset=lmodern, fontset=lucida, 
 %						fontset=fira-newtxsf, fontset=newtx, fontset=newtx-sans-text,  
 %						fontset=heros-stix2,  fontset=stix2, fontset=termes-stix2, fontset=termes
@@ -86,6 +86,7 @@
 \usepackage{booktabs}% publication quality tables (https://ctan.org/pkg/booktabs)
 
 \usepackage{array}% Additional options for column formats (https://ctan.org/pkg/array)
+\usepackage{adjustbox} 
 
 \usepackage{dcolumn}% For alignment of numbers on the decimal place (https://ctan.org/pkg/dcolumn) 
   \newcolumntype{d}[1]{D{.}{.}{#1}}% use with dcolumn package. Note: dcolumns are set in math mode.
@@ -120,7 +121,7 @@
 %%   cheat sheet is here:   https://tug.ctan.org/info/biblatex-cheatsheet/biblatex-cheatsheet.pdf
 
 %% Numerical citations of references
-\usepackage[style=ext-numeric-comp,giveninits=true,maxbibnames=10,sorting=none,language=american]{biblatex}
+\usepackage[style=ext-numeric-comp,giveninits=true,maxbibnames=99,sorting=none,language=american]{biblatex}
 
 % and make some changes to that style
 	\renewcommand{\multicitedelim}{\addcomma}% removes space between consecutive cites to give [6,7], not [6, 7]
@@ -197,7 +198,7 @@
 % The following items should be adjusted to match your work. <================= !!!!!!!!!!
 
 \hypersetup{%
-	pdfsubject={TODO: thesis topic},
+	pdfsubject={Formal verification of vector assembly in Fiat Cryptography},
 	% Change this to briefly state topic of your thesis 
 % 
 	pdfkeywords={Andrew M. Spears, MIT, Massachusetts Institute of Technology},
@@ -234,22 +235,24 @@
 % \includeonly{body}
 %   for usage of includeonly, see https://latexref.xyz/_005cinclude-_0026-_005cincludeonly.html
 
-\newcommand{\codeshot}[2][0.3]{%
-  \noindent\includegraphics*[scale=#1]{code-screenshots/#2.png}\par
+\NewDocumentCommand{\codeshot}{m O{15pt} O{15pt}}{%
+  \par\vspace*{#2}\includegraphics*[scale=0.2]{code-screenshots/#1.png}\vspace{#3}\par
 }
 
-\newcommand{\codeshotfig}[3][0.3]{%
-\begin{figure}[h]
-  \noindent\includegraphics*[scale=#1]{code-screenshots/#2.png}
-  \caption{#3}
-  \label{fig:#2}
+\NewDocumentCommand{\codeshotfig}{m m O{15pt} O{15pt}}{%
+  \begin{figure}[h]
+  \vspace*{#3}\noindent\includegraphics*[scale=0.2]{code-screenshots/#1.png}\vspace{#4}
+  \caption{#2}
+  \label{fig:#1}
   \end{figure}
 }
 
 \newcommand{\depgraph}[3][0.5]{%
   \begin{figure}[h]
     \centering
-    \includegraphics*[scale=#1]{dep_graphs/#2.png}
+    \begin{adjustbox}{center,margin*=-1in 0pt -1in 0pt}
+      \includegraphics*[scale=#1]{dep_graphs/#2.png}
+    \end{adjustbox}
     \caption{#3}
     \label{fig:#2}
   \end{figure}
