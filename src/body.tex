@@ -5,7 +5,7 @@
 
 Cryptographic software depends on a small set of arithmetic primitives that are invoked thousands of times in basic protocols. These operations are mathematically simple (finite-field addition, multiplication, and reduction), but their implementations are performance-critical. For this reason, they are often hand-optimized in assembly to exploit machine-specific features, a process that is both error-prone and difficult to verify. 
 
-Fiat Cryptography~\autocite{fiatcrypto2019} and CryptOpt~\autocite{cryptopt2023} are recent projects that attempt to solve this problem by synthesizing low-level programs and guaranteeing correctness through formal verification. 
+Fiat Cryptography~\autocite{fiatcrypto2019}\footnote{Source code for Fiat Cryptography and the work described in this thesis is available at \url{https://github.com/mit-plv/fiat-crypto}.} and CryptOpt~\autocite{cryptopt2023} are recent projects that attempt to solve this problem by synthesizing low-level programs and guaranteeing correctness through formal verification.
 The resulting code outperforms standard compilers, and certain synthesized primitives are used in production by all major web browsers and many TLS implementations.
 
 However, both Fiat Cryptography and CryptOpt are currently limited to scalar x86-64 instructions. Vectorized instructions perform operations in parallel and are increasingly relied upon in the highest-performance implementations, but these synthesis pipelines are incompatible with vectorized instruction sets, putting a hard ceiling on their performance capabilities.
@@ -16,7 +16,7 @@ Our contributions include:
 \begin{enumerate}
     \item Refactoring existing proof infrastructure and automation to be more modular, enabling scalable extension to new instruction families
     \item Refactoring the register and memory infrastructure to support 128-bit and 256-bit operands
-    \item Implementing symbolic execution for over 20 AVX2 instructions, with modular abstractions designed to scale to additional instructions
+    \item Implementing symbolic execution for 19 AVX2 instructions, with modular abstractions designed to scale to additional instructions
     \item Developing a hierarchical proof strategy with correspondence lemmas and proof automation for relating symbolic and concrete semantics
     \item Adding rewrite rules that enable the equivalence checker to simplify lane-gathering and decomposition patterns
 \item Demonstrating end-to-end equivalence checking on a suite of vectorized field-arithmetic programs
@@ -287,7 +287,7 @@ However, when writing to a 128-bit-wide xmm register, even a 64-bit write needs 
 %   if (N.eqb lo 0) && (N.eqb sz (widest_reg_size_of r))
 %   then SetRegOverwrite r v (* works even if old value is unspecified *)
 %   else SetRegSlice r v.
-% #ENDb
+% #END
 \codeshot{SetRegNew}
 
 This kind of refactor requires new lemma structure as well.
@@ -618,7 +618,7 @@ In fact, we ended up adding this rule as well based on empirical testing:
 % #END
 \codeshot{slice_tower_normalize}
 
-We were able to verify simple vector programs with these rules, but each new instruction pattern required additional ad-hoc rules, confirming that this approach would not scale\footnote{Another approach is to convert to full e-graphs with node merging, which would remove the need for these rules entirely.}. 
+We were able to verify simple vector programs with these rules, but each new instruction pattern required additional ad-hoc rules, confirming that this approach would not scale\footnote{Another approach is to convert to full e-graphs with node merging, which would remove the need for these rules entirely.}.
 
 Since we did not adopt the atomic-vector-op approach, the \texttt{slice\_vadd} rule was abandoned.
 The \texttt{coalescing\_slice} and \texttt{slice\_tower\_normalize} rules were kept, since they are sound simplifications that can only help.
@@ -1091,7 +1091,7 @@ Batched operations on contiguous data show speedups between $2.2\times$ and $5.5
 
 Limb-parallel vector operations get no meaningful speedup. Field elements have five 64-bit limbs, but XMM and YMM registers store two and four limbs respectively, so the vectorized program still handles a tail in scalar instructions and pays overhead at the boundary. Limb-parallel optimization might be more effective in representations with different limb counts.
 
-Batched carry operations are slower than scalar in two cases and only modestly faster in others. Batching carry propagation across elements is difficult beause it requires transforming the data layout, which incurs a fixed overhead. This fixed cost dominates for short programs like these, but would be less significant for longer chains of batched operations.
+Batched carry operations are slower than scalar in two cases and only modestly faster in others. Batching carry propagation across elements is difficult because it requires transforming the data layout, which incurs a fixed overhead. This fixed cost dominates for short programs like these, but would be less significant for longer chains of batched operations.
 
 
 \section{Implementation Effort}
@@ -1129,7 +1129,7 @@ The majority of the new code constitutes proofs of correspondence in \texttt{Sym
 \label{ch:discussion}
 
 This thesis extended Fiat Cryptography's equivalence checker from scalar-only x86-64 to a subset of AVX2 enabling SIMD field arithmetic.
-Our additions include refactored register and memory infrastructure for 128-bit and 256-bit operands, symbolic execution and concrete semantics for over 20 AVX2 instructions, verified correspondence proofs for all implemented instructions, rewrite rules for simplifying vector-induced DAG patterns, and a test suite of verified vectorized-field-arithmetic programs.
+Our additions include refactored register and memory infrastructure for 128-bit and 256-bit operands, symbolic execution and concrete semantics for 19 AVX2 instructions, verified correspondence proofs for all implemented instructions, rewrite rules for simplifying vector-induced DAG patterns, and a test suite of verified vectorized-field-arithmetic programs.
 
 Two limitations are worth noting.
 First, the rewrite system is best-effort: rules are syntactic pattern matches on DAG structure, determined empirically.

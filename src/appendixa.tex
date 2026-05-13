@@ -2,7 +2,7 @@
 \label{app:dep-graphs}
 
 We show dependency graphs for \texttt{GetOperand} and \texttt{SetOperand}, two of the top-level functions used in symbolic execution, as well as for their correspondence lemmas, \texttt{GetOperand\_R} and \texttt{R\_SetOperand}.
-Arrows indicate that one definition calls another, or that one lemma is used in the proof of another."
+Arrows indicate that one definition calls another, or that one lemma is used in the proof of another.
 These graphs exclude many helper functions and lemmas that are not essential to the high-level structure.
 
 \depgraph[.55]{GetOperand}{Dependency graph of \texttt{GetOperand}, which resolves a source operand to a DAG index by dispatching on operand type (register, memory, immediate).}[Tree-shaped dependency graph rooted at GetOperand, branching into helper functions for register, memory, and immediate operand cases, with leaf nodes for primitive DAG operations.]
