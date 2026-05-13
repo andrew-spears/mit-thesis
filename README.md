@@ -1,7 +1,7 @@
 # Verified Equivalence Checking for Vector Assembly in Fiat Cryptography
 
 MEng thesis by Andrew M. Spears, MIT EECS, May 2026.
-Official document at [src/mitthesis/src/spears-amspears-meng-eecs-2026-thesis.pdf](src/mitthesis/src/spears-amspears-meng-eecs-2026-thesis.pdf).
+Official document at [src/spears-amspears-meng-eecs-2026-thesis.pdf](src/spears-amspears-meng-eecs-2026-thesis.pdf).
 
 ## Building
 
