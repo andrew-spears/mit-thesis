@@ -8,10 +8,10 @@ The thesis source lives in [src/](src/). To build:
 
 ```sh
 cd src
-latexmk -lualatex MIT-Thesis.tex
+latexmk -lualatex spears-amspears-meng-eecs-2026-source.tex
 ```
 
-Built output: [src/MIT-Thesis.pdf](src/MIT-Thesis.pdf).
+Built output: [src/spears-amspears-meng-eecs-2026-source.pdf](src/spears-amspears-meng-eecs-2026-source.pdf).
 
 Run
 
@@ -23,7 +23,7 @@ to generate code screenshots from "#CODESHOT'-delimited comments.
 
 ## Layout
 
-- [src/MIT-Thesis.tex](src/MIT-Thesis.tex) — main document
+- [src/spears-amspears-meng-eecs-2026-source.tex](src/spears-amspears-meng-eecs-2026-source.tex) — main document
 - [src/body.tex](src/body.tex), [appendixa.tex](src/appendixa.tex), [appendixb.tex](src/appendixb.tex) — content
 - [src/abstract.tex](src/abstract.tex), [acknowledgments.tex](src/acknowledgments.tex), [biography.tex](src/biography.tex) — frontmatter
 - [src/references.bib](src/references.bib) — bibliography
