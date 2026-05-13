@@ -287,16 +287,16 @@ However, when writing to a 128-bit-wide xmm register, even a 64-bit write needs 
 %   if (N.eqb lo 0) && (N.eqb sz (widest_reg_size_of r))
 %   then SetRegOverwrite r v (* works even if old value is unspecified *)
 %   else SetRegSlice r v.
-% #END
+% #ENDb
 \codeshot{SetRegNew}
 
 This kind of refactor requires new lemma structure as well.
 In this case, we introduced two new lemmas:
 
 % another option: math notation, but this is kinda ugly...
-$$
-\frac{R(s, m) \quad \text{offset}(r) = 0 \quad \text{size}(r) = \text{widest}(r) \quad \text{SetRegOverwrite}(r, i, s) = (s') \quad [i]_s = v}{R(s',; m[r \rightarrow v]) ;\wedge; s \preceq s'}
-$$
+% $$
+% \frac{R(s, m) \quad \text{offset}(r) = 0 \quad \text{size}(r) = \text{widest}(r) \quad \text{SetRegOverwrite}(r, i, s) = (s') \quad [i]_s = v}{R(s',; m[r \rightarrow v]) ;\wedge; s \preceq s'}
+% $$
 
 % #CODESHOT R_SetReg_full
 % (* Overwrite case: r is the widest register in its hierarchy. *)
@@ -961,7 +961,7 @@ We evaluate our implementation on a suite of hand-written AVX2 assembly programs
 Each test verifies that the assembly program computes the same function as the corresponding Fiat Cryptography specification, using the equivalence checker.
 
 Our test suite, listed in \autoref{tab:results}, covers both limb-parallel and batched SIMD programs, as described in \autoref{sec:avx-background}, along with two 4$\times$-scalar baselines used as comparison points in our runtime benchmarks.
-Checking time appears to scale roughly linearly with instruction count, and is at most a few seconds even for the largest test, which is inconsequential in practice since each program is only checked once.
+Checking time appears to scale roughly linearly with instruction count and is at most a few seconds even for the largest test, which is inconsequential in practice since each program is only checked once.
 
 \begin{table}[h]
 \centering
@@ -1052,8 +1052,8 @@ While correctness is the primary goal of this work, we also evaluate the perform
 For each vectorized assembly program in \autoref{tab:results}, we benchmark
 against a scalar baseline performing the same batched operation using four
 sequential calls to the corresponding function synthesized by Fiat Cryptography.
-The scalar baselines are compiled once with \texttt{gcc -O2} and the resulting assembly is frozen to ensure reproducibility. 
-Both scalar and vectorized sides are pre-compiled assembly linked against the same benchmark harness. 
+The scalar baselines are compiled once with \texttt{gcc -O2}, and the resulting assembly is frozen to ensure reproducibility. 
+Both scalar and vectorized sides are precompiled assembly linked against the same benchmark harness. 
 We run on an AMD EPYC 7502P pinned to a single core via \texttt{taskset}, reporting the mean and standard deviation over 10 runs of $10^7$ iterations each.
 Results are reported in \autoref{tab:perf}.
 
@@ -1091,7 +1091,7 @@ Batched operations on contiguous data show speedups between $2.2\times$ and $5.5
 
 Limb-parallel vector operations get no meaningful speedup. Field elements have five 64-bit limbs, but XMM and YMM registers store two and four limbs respectively, so the vectorized program still handles a tail in scalar instructions and pays overhead at the boundary. Limb-parallel optimization might be more effective in representations with different limb counts.
 
-Batched carry operations are slower than scalar in two cases and only modestly faster in the others. This is because batching carry propagation across elements requires transforming the data layout, which incurs a fixed overhead. This fixed cost dominates for short programs like these, but would be less significant for longer chains of batched operations.
+Batched carry operations are slower than scalar in two cases and only modestly faster in others. Batching carry propagation across elements is difficult beause it requires transforming the data layout, which incurs a fixed overhead. This fixed cost dominates for short programs like these, but would be less significant for longer chains of batched operations.
 
 
 \section{Implementation Effort}
@@ -1108,12 +1108,12 @@ The majority of the new code constitutes proofs of correspondence in \texttt{Sym
 \textbf{File} & \textbf{Lines added} & \textbf{Purpose} \\
 \midrule
 \texttt{SymbolicProofs.v} & 2324 & Correspondence proofs \\
-\texttt{Symbolic.v}       &  727 & Symbolic execution rules, rewrite rules \\
+\texttt{Symbolic.v}       &  727 & Symbolic-execution rules, rewrite rules \\
 \texttt{Semantics.v}      &  247 & Concrete (denotational) semantics \\
 \texttt{Syntax.v}         &  235 & Opcode constructors, operand size inference \\
-\texttt{Equivalence.v}    &   76 & 128/256-bit DAG node support \\
-\texttt{Parse.v}          &   36 & Memory operand parsing (vector indices) \\
-\texttt{Equality.v}       &    5 & \texttt{MEM} type equality update \\
+\texttt{Equivalence.v}    &   76 & 128/256-bit DAG-node support \\
+\texttt{Parse.v}          &   36 & Memory-operand parsing (vector indices) \\
+\texttt{Equality.v}       &    5 & \texttt{MEM}-type equality update \\
 \midrule
 \textbf{Total}            & \textbf{3,650} & \\
 \bottomrule
